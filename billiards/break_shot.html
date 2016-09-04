@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Break Shot –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<header>
+    <a class="siteTitle" href="/">Many Tiny Things</a>
+</header>
+<div id="body">
+	<div class="navigationArea">
+		
+			<a href="/billiards/impulse">«</a>
+		
+	</div>
+	
+	<div id="content">
+		
+			<h1>Break Shot</h1>
+		
+		<script>
+    var sim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.boxWidth = 30;
+
+            initBilliards(simulation, 16);
+
+    		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
+        }
+    });
+</script>
+
+<div id="chapter">
+
+  <div class="page">
+    <div class="stepLog twoColumn">
+      <p>I added some more balls!</p>
+
+      <p>You know what to do.</p>
+
+      <script>
+	cue(isBilliardsTriangleSplit(sim));
+	endStep();
+</script>
+
+      <p>Nice break shot!</p>
+
+      <p><em>Wait, why are we playing billiards?</em></p>
+
+    </div>
+
+    <div class="twoColumn">
+      <script>
+	insertHere(sim.div);
+</script>
+
+    </div>
+  </div>
+</div>
+
+	</div>
+
+	<div class="navigationArea">
+		
+			<a href="/billiards/differences">»</a>
+		
+	</div>
+</div>
+<footer>
+	
+		<a href="/billiards/differences">Next <span class="chevron">»</span></a>
+	
+</footer>
+</body>
+</html>

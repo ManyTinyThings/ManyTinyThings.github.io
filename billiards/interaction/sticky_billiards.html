@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Sticky Billiards –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<header>
+    <a class="siteTitle" href="/">Many Tiny Things</a>
+</header>
+<div id="body">
+	<div class="navigationArea">
+		
+			<a href="/billiards/interaction/group_hug">«</a>
+		
+	</div>
+	
+	<div id="content">
+		
+			<h1>Sticky Billiards</h1>
+		
+		<script src="shared.js"></script>
+
+<script>
+
+    var interactionSim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0.1;
+            p.boxWidth = 25
+
+            initBilliards(simulation, 11);
+
+            p.isOnlyHardSpheres = false;
+
+            var ljInteraction = new LennardJonesInteraction();
+            ljInteraction.strength = 3;
+            setInteraction(simulation, 0, 0, ljInteraction);
+
+            setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
+        }
+    });
+</script>
+
+<div id="chapter">
+
+  <div class="page">
+
+    <div class="stepLog twoColumn">
+
+      <p>Back to billiards!</p>
+
+      <p>Split the triangle.</p>
+
+      <script>
+    cue(isBilliardsTriangleSplit(interactionSim));
+    endStep();
+</script>
+
+      <p>It’s harder when they are sticking together, but with enough speed it’s possible.</p>
+
+    </div>
+
+    <div class="twoColumn">
+      <script>
+    insertHere(interactionSim.div);
+</script>
+
+    </div>
+  </div>
+
+</div>
+
+	</div>
+
+	<div class="navigationArea">
+		
+			<a href="/billiards/differences">»</a>
+		
+	</div>
+</div>
+<footer>
+	
+		<a href="/billiards/differences">Next <span class="chevron">»</span></a>
+	
+</footer>
+</body>
+</html>

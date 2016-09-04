@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Group Hug –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<header>
+    <a class="siteTitle" href="/">Many Tiny Things</a>
+</header>
+<div id="body">
+	<div class="navigationArea">
+		
+			<a href="/states/attractive_potential">«</a>
+		
+	</div>
+	
+	<div id="content">
+		
+			<h1>Group Hug</h1>
+		
+		<script src="shared.js"></script>
+
+<script>
+
+    var interactionSim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0.1;
+
+            addOppositeParticles(simulation);
+
+            var ljInteraction = new LennardJonesInteraction();
+            ljInteraction.strength = 10;
+            setInteraction(simulation, 0, 0, ljInteraction);
+
+            setToolbarAvailableTools(simulation.toolbar, ["create", "move"]);
+        }
+    });
+
+    function ensembleSpeed(particles)
+    {
+        var totalVelocity = v2.alloc();
+        v2.set(totalVelocity, 0, 0);
+        for (var particleIndex = 0; particleIndex < particles.length; particleIndex++) {
+            var particle = particles[particleIndex];
+            v2.add(totalVelocity, totalVelocity, particle.velocity);
+        }
+        var ensembleSpeed = v2.magnitude(totalVelocity) / particles.length;
+        v2.free(totalVelocity);
+        return ensembleSpeed;
+    }
+</script>
+
+<div id="chapter">
+
+  <p>We now have some more understanding of how two particles interact. Now let’s see what happens when there are more than two!</p>
+
+  <div class="page">
+
+    <div class="stepLog twoColumn">
+
+      <p>Let’s add some more particles! (select the <em>create</em> tool and use the mouse)</p>
+
+      <script>
+    cue(function () {
+        return (interactionSim.particles.length > 20);  
+    });
+    endStep();
+</script>
+
+      <p>They group together and form a larger shape, a <em>solid</em>, if you will.</p>
+
+      <p>Try moving the solid around.</p>
+
+      <script>
+    cue(function () {
+        return (ensembleSpeed(interactionSim.particles) > 1); 
+    });
+    endStep();
+</script>
+
+      <p>The particles collectively behave like the macroscopic objects we are used to, moving and rotating as a unit.</p>
+
+      <p>So far, we’ve have had friction, but there is no friction in the microscopic world.</p>
+
+      <p>Turn off the friction.</p>
+
+      <script>
+    cue(function () {
+        return (interactionSim.parameters.friction == 0);
+    });
+    createSliderHere({
+        object: interactionSim.parameters,
+        name: "friction",
+        min: 0, max: 0.1,
+        minLabel: "No friction", maxLabel: "Some",
+    });
+</script>
+
+      <p>Give the particles some energy.</p>
+
+      <script>
+    cue(function() {
+        return (getTotalEnergy(interactionSim) > 0.1);
+    });
+    endStep();
+</script>
+
+      <p>Let’s try amplifying the speed of each particle, in turn increasing the jiggling.</p>
+
+      <p>The random jiggling kicks the particles out of their positions, and what was a neat shape becomes something less ordered and more random. We have melted the <em>solid</em> into a <em>liquid</em>.</p>
+
+      <p>If we increase the temperature (and thus the jiggling) even further, the speed is to great to keep the particles together, and they start bouncing around randomly. The heat of the system is too high for the attraction to matter much, and we’ve vaporized our <em>liquid</em> into <em>gas</em>.</p>
+    </div>
+
+    <div class="twoColumn">
+      <script>
+    insertHere(interactionSim.div);
+    /*
+    insertHere(createOutput({
+        label: "distance: ",
+        update: function () {
+            var distance = v2.distance(interactionSim.particles[0].position, interactionSim.particles[1].position);
+            return distance.toFixed(2);
+        }
+    }));
+    insertHere(createOutput({
+        label: "average speed: ",
+        update: function () {
+            var speed = ensembleSpeed(interactionSim.particles);
+            return speed.toFixed(2);
+        }
+    }));
+    */
+</script>
+
+    </div>
+  </div>
+
+</div>
+
+	</div>
+
+	<div class="navigationArea">
+		
+			<a href="/states/evaporation">»</a>
+		
+	</div>
+</div>
+<footer>
+	
+		<a href="/states/evaporation">Next <span class="chevron">»</span></a>
+	
+</footer>
+</body>
+</html>

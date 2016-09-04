@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Testing Area</title>
+    <meta name="viewport" content="width=device-width">
+    <script src="scripts/functions.js" type="text/javascript"></script>
+    <script src="scripts/canvas.js" type="text/javascript" charset="utf-8"></script>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+<h1>Testing in progress!</h1>
+<div class="twoColumn">
+    <script>
+        var sim = createSimulationHere({
+            initialize: function(simulation) {
+
+                var p = simulation.parameters;
+                //p.friction = 0.1;
+                p.boxWidth = 20;
+                p.boxHeight = 20
+                p.isPeriodic = true;
+
+                p.thermostatSpeed = 0.1;
+                p.thermostatTemperature = 0.1;
+
+                updateBounds(simulation);
+
+                simulation.walls = [];
+                
+                var x = v2.alloc();
+                var y = v2.alloc();
+
+                var latticeSpacing = 2;
+                v2.setPolar(x, latticeSpacing, 0);
+                v2.setPolar(y, latticeSpacing, tau / 6);
+
+                var colCount = 10;
+                var rowCount = 11;
+                var particleCount = colCount * rowCount;
+
+
+                for (var row = 0; row < rowCount; row++) {
+                    for (var col = 0; col < colCount; col++) {
+                       
+                        var particle = new Particle();
+                        v2.scaleAndAdd(particle.position, particle.position, x, col);
+                        v2.scaleAndAdd(particle.position, particle.position, y, row);
+                        addParticle(simulation, particle);
+                    }
+                }
+                new LennardJonesInteraction()
+                setInteraction(simulation, 0, 0, );
+
+            }
+        });
+        insertHere(createButton({
+            label: "Reset",
+            action: function() { resetSimulation(sim) },
+        }));
+    </script>
+</div>
+<div class="twoColumn">
+    <script>
+        createTimeSeriesHere({
+            range: 50,
+            update: function () {
+                return {time: sim.time, data: [getTotalEnergy(sim)]};
+            },
+        })
+    </script>
+</div>
+    <p>
+    Temperature: <br><script>
+        insertHere(createSlider({
+            object: sim.parameters,
+            name: "thermostatTemperature",
+            min: 0, max: 1,
+            minLabel: "None", maxLabel: "A lot",
+        }));
+    </script>
+    </p>
+    and some more text and a checkbox
+    <p>
+    <script>
+        insertHere(createCheckbox({
+            object: sim,
+            name: "pausedByUser",
+            label: "paused",
+        }));
+    </script>
+    </p>
+    </p>
+</body>
+
+</html>

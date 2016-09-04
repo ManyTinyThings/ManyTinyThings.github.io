@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Entropy –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<header>
+    <a class="siteTitle" href="/">Many Tiny Things</a>
+</header>
+<div id="body">
+	<div class="navigationArea">
+		
+	</div>
+	
+	<div id="content">
+		
+			<h1>Entropy</h1>
+		
+		<h1 id="entropy">Entropy</h1>
+
+<p>Don’t agree? It’s more obvious when there are more particles.</p>
+
+<script>
+    var halfRegionMoreSim = createSimulation({ 
+        particleGenerator: uniformParticleGenerator,
+        visualizations: ["countsHistogram"],
+        parameters: {
+            maxInitialSpeed: 0.01,
+            particleCount: 200,
+            radiusScaling: 0.02,
+            bondEnergy: 0,
+        },
+    });
+
+    setColdHotRegions(halfRegionMoreSim);
+
+</script>
+
+<p>“But you’re cheating!”, you might say, “you’re starting with all particles evenly spread out!”</p>
+
+<p>Okay, put them wherever you want (hold <em>c</em> on the keyboard and use the mouse) and then give them a kick.</p>
+
+<script>
+    var initialConfigSim = createSimulation({
+        controls: ["resetButton"],
+        particleGenerator: uniformParticleGenerator,
+        visualizations: ["countsHistogram"],
+        parameters: {
+            maxInitialSpeed: 0,
+            particleCount: 0,
+            radiusScaling: 0.02,
+            bondEnergy: 0,
+        },
+    });
+
+    setColdHotRegions(initialConfigSim);
+
+</script>
+
+<p>It can take a while for them to spread out. If you’re impatient, try giving them a harder kick (or more kicks, if you prefer).</p>
+
+<p>It works the same with more regions than just two.</p>
+
+<script>
+    var fourRegionSim = createSimulation({
+        controls: ["resetButton"],
+        particleGenerator: uniformParticleGenerator,
+        visualizations: ["countsHistogram"],
+        parameters: {
+            maxInitialSpeed: 0,
+            particleCount: 0,
+            radiusScaling: 0.02,
+            bondEnergy: 0,
+        },
+    });
+
+    fourRegionSim.measurementRegions = [];
+    var regionCount = 4;
+    var regionWidth = fourRegionSim.boxBounds.width / regionCount;
+    var regionColors = [colors.blue, colors.green, colors.yellow, colors.red];
+    for (var i = 0; i < regionCount; i++) {
+        var region = createMeasurementRegion();
+        var left = fourRegionSim.boxBounds.left + i * regionWidth;
+        var right = left + regionWidth;
+        setLeftTopRightBottom(region.bounds,
+            left, fourRegionSim.boxBounds.top, right, fourRegionSim.boxBounds.bottom);
+        region.color = regionColors[i];
+        region.overlayColor = withAlpha(regionColors[i], 0.2);
+        fourRegionSim.measurementRegions.push(region);
+    }
+</script>
+
+<p>It doesn’t matter how ordered they start out. As soon as they start moving they inevitably spread out evenly.
+How come the particles like to spread out, but not come back together? To understand, we need to talk about randomness.</p>
+
+<h2 id="randomness">Randomness</h2>
+
+<p>When there are just a few particles, our “billiards sense” tells us roughly how the particles will bounce off each other. We can predict what will happen a few moments from now.</p>
+
+<script>
+    var simpleSim = createSimulation({
+        controls: ["resetButton"],
+        particleGenerator: uniformParticleGenerator,
+        parameters: {
+            maxInitialSpeed: 0.05,
+            particleCount: 3,
+            radiusScaling: 0.1,
+            bondEnergy: 0,
+        },
+    });
+</script>
+
+<p>Nothing random about it.</p>
+
+<p>However, if we add more particles, it becomes much harder to predict what will happen.</p>
+
+<script>
+    var moreParticlesSim = createSimulation({
+        controls: ["resetButton"],
+        particleGenerator: uniformParticleGenerator,
+        parameters: {
+            maxInitialSpeed: 0.04,
+            particleCount: 20,
+            radiusScaling: 0.1,
+            bondEnergy: 0,
+        },
+    });
+</script>
+
+<p>While this simulation follows the exact same rules as the previous one, it’s much harder to make predictions, which makes it look random. Let me show you.</p>
+
+<div class="two_column">
+  <p>Add particles randomly by dragging the slider. As you do, the particles appear randomly, and are equally likely to appear in any free space in the box.</p>
+</div>
+
+<div class="two_column">
+  <p>Kickstart this simulation and run it for a while, then pause.</p>
+</div>
+
+<div class="two_column">
+  <script>
+    var randomSim = createSimulation({
+        controls: ["resetButton", "particleCount"],
+        particleGenerator: uniformParticleGenerator,
+        parameters: {
+            maxInitialSpeed: 0.0,
+            particleCount: 0,
+            radiusScaling: 0.03,
+            bondEnergy: 0,
+        },
+    });
+</script>
+
+</div>
+
+<div class="two_column">
+  <script>
+    function gridGenerator(simulation, particleIndex)
+    {
+        var particle = new Particle();
+        particle.position = rectangularLatticePosition(simulation, particleIndex);
+        particle.velocity = uniformVelocity(simulation, particleIndex);
+        return particle;
+    }
+
+    var frozenSim = createSimulation({
+        controls: ["playPauseButton", "resetButton"],
+        particleGenerator: gridGenerator,
+        parameters: {
+            maxInitialSpeed: 0,
+            particleCount: 225,
+            radiusScaling: 0.03,
+            bondEnergy: 0,
+        },
+    });
+</script>
+
+</div>
+
+<p>The two frozen systems are generated in very different ways, yet if you didn’t know it, you wouldn’t be able to tell which one is which. This brings us to a very useful conclusion:</p>
+
+<p><em>After letting the particles bounce around for a while, they become practically randomly spread out.</em></p>
+
+<p>This means that we can analyse the spreading behavior we observed above by forgetting about the movement of the particles and just think of them as randomly placed.</p>
+
+<p>Now, let’s return to the getting all the particles in one half of the box.</p>
+
+<script>
+    function halfGenerator(simulation, particleIndex)
+    {
+        var particle = new Particle();
+        do {
+            particle.position = randomPointInRect(simulation.leftRect);    
+        } 
+        while (isColliding(simulation, particle))
+
+        particle.velocity = uniformVelocity(simulation, particleIndex);
+        return particle;
+    }
+
+    var halfBox = createSimulation({ 
+        particleGenerator: halfGenerator,
+        controls: ["playPauseButton", "resetButton"],
+        visualizations: ["countsHistogram"],
+        parameters: {
+            maxInitialSpeed: 0.01,
+            particleCount: 20,
+            bondEnergy: 0,
+        },
+    });
+
+    setColdHotRegions(halfBox);
+
+    halfBox.pausedByUser = true;
+</script>
+
+<p>What’s the probability that the particles would spontaneously end up in one half after a while?</p>
+
+<p>Let’s add one at a time. Each time we add a particle, the probability is 50% that it will end up in the left half. Probabilities multiply, so the total probability will be a half of a half of a half … etc.</p>
+
+<script>
+    var probabilitySim = createSimulation({
+        controls: ["resetButton", "addRandomParticleButton"],
+        visualizations: ["probability"],
+        particleGenerator: halfGenerator,
+        parameters: {
+            maxInitialSpeed: 0.0,
+            particleCount: 0,
+            bondEnergy: 0,
+        },
+        customUpdate: function(simulation) {
+            var output = document.getElementById("probability");
+            var p = arrayLast(simulation.probability);
+            output.value = (p * 100).toPrecision(3) + "%";
+        },
+    });
+
+    setColdHotRegions(probabilitySim);
+</script>
+
+<p>Total probability: <output id="probability"></output></p>
+
+<p>It’s <em>very</em> unlikely that all of them would end up in that half.</p>
+
+<p>What’s most probable? You guessed it: that they end up</p>
+
+<script>
+	//var binomialGraph = createGraph();
+	
+</script>
+
+<h2 id="important-sentences">Important sentences</h2>
+
+<p><em>Entropy is a measure of how evenly spread out something is.</em></p>
+
+<p><em>Entropy always increases, because it’s more probable that things are spread out than not.</em></p>
+
+<h2 id="todo">Todo</h2>
+
+<ul>
+  <li>Show how velocities will also spread out</li>
+  <li>Explain thru probabilities
+    <ul>
+      <li>Make probs concrete thru talking about a percentage of time</li>
+    </ul>
+  </li>
+  <li>Run simulation super fast to show where balls will end up after long time?</li>
+</ul>
+
+	</div>
+
+	<div class="navigationArea">
+		
+	</div>
+</div>
+<footer>
+	
+</footer>
+</body>
+</html>

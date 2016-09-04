@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Pressure –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<header>
+    <a class="siteTitle" href="/">Many Tiny Things</a>
+</header>
+<div id="body">
+	<div class="navigationArea">
+		
+	</div>
+	
+	<div id="content">
+		
+			<h1>Pressure</h1>
+		
+		<div class="page">
+  <script>
+    var wallDetectorSim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0.1;
+            p.dragStrength = 2;
+
+            var particle = new Particle();
+            addParticle(simulation, particle);
+        },
+    });
+</script>
+
+  <div class="stepLog twoColumn">
+
+    <p>I’ve installed force measurement devices in the walls here. They detect whenever a particle bounces off the wall, and how hard.</p>
+
+    <script>
+
+    createTimeSeriesHere({
+        timeRange: 50,
+        yMax: 10,
+        update: function(graph) {
+            return {time: wallDetectorSim.time, data: [getTotalPressure(wallDetectorSim)]};
+        },
+    });
+</script>
+
+    <p>Carefully throw the ball at a wall.</p>
+
+    <script>
+    cue(function() {
+        var pressure = getTotalPressure(wallDetectorSim);
+        return ((0.1 < pressure) && (pressure < 2));
+    });
+</script>
+
+    <p>Throw the ball with a lot of force.</p>
+
+    <script>
+    cue(function() {
+        var pressure = getTotalPressure(wallDetectorSim);
+        return (pressure > 5);
+    });
+    endStep();
+</script>
+
+    <p>Since the particles only collides with the wall for an instant, the collisions show up as narrow spikes in the graph. Short impacts like these are called <em>impulses</em>.</p>
+
+    <p>Drag the ball toward the edge of the box, and keep dragging even as the mouse is outside the box.</p>
+
+    <script>
+    var dragTime = 1;
+    var dragTimeLeft = dragTime;
+    cue(function(dt) {
+        var pressure = getTotalPressure(wallDetectorSim);
+        if (pressure > 1)
+        {
+            dragTimeLeft -= dt;
+        }
+        else
+        {
+            dragTimeLeft = dragTime;
+        }
+
+        return (dragTimeLeft <= 0);
+    });
+    endStep();
+</script>
+
+    <p>This simulates you pushing the ball toward the wall, which puts <em>pressure</em> on the wall. And not just a short spike, but continuous pressure that doesn’t let up until you let go.</p>
+
+  </div>
+  <div class="twoColumn">
+    <script>
+    insertHere(wallDetectorSim.div);
+</script>
+
+  </div>
+</div>
+
+<div class="page">
+  <script>
+    
+    var pressureSim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0;
+            p.boxWidth = 100;
+            p.maxParticleCount = 1000;
+
+            updateBounds(simulation);
+
+            var particleCount = 500;
+
+            var newParticles = [];
+            for (var i = 0; i < (particleCount - 1); i++) {
+                var particle = new Particle();
+                particle.velocity = randomVelocity(20);
+                newParticles[i] = particle;
+
+
+            }
+
+            addParticle(simulation, new Particle());
+            addParticlesRandomly(simulation, newParticles);
+
+            setInteraction(simulation, 0, 0, null);
+        },
+    });
+
+    pressureSim.pausedByUser = true;
+</script>
+
+  <div class="stepLog twoColumn">
+
+    <p>I’ve installed force measurement devices in the walls here. They detect whenever a particle bounces off the wall, and how hard. Try throwing the particle at the wall at different speeds.</p>
+
+    <script>
+createTimeSeriesHere({
+        timeRange: 100,
+        update: function(graph) {
+            return {time: pressureSim.time, data: [getTotalPressure(pressureSim)]};
+        },
+    });
+</script>
+
+  </div>
+  <div class="twoColumn">
+    <script>
+    insertHere(pressureSim.div);
+
+</script>
+
+  </div>
+</div>
+<script>
+    initChapter();
+</script>
+
+<h2 id="hard-to-open-jar">Hard-to-open jar</h2>
+
+
+	</div>
+
+	<div class="navigationArea">
+		
+	</div>
+</div>
+<footer>
+	
+</footer>
+</body>
+</html>

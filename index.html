@@ -1,11 +1,288 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-	<title>test</title>
+ 	<meta charset="utf-8">
+	<title>
+		
+			 –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
 </head>
 <body>
+<header>
+    <a class="siteTitle" href="/">Many Tiny Things</a>
+</header>
+<div id="body">
+	<div class="navigationArea">
+		
+	</div>
+	
+	<div id="content">
+		
+			<h1></h1>
+		
+		<p>Every big thing in the world is made up of <strong>many tiny things</strong>.</p>
 
-<h1>Hello test</h1>
+<div class="flex">
 
+  <div class="threeColumn">
+    <p><strong>Air</strong> is <em>many tiny things</em> bouncing around everywhere</p>
+
+    <script>
+	var airSim = createSimulationHere({
+		pixelWidth: 250,
+		pixelHeight: 250,
+		initialize: function(simulation)
+		{
+			var p = simulation.parameters;
+			p.boxWidth = 200;
+			p.isOnlyHardSpheres = true;
+			p.gravityAcceleration = 1;
+			p.attractStrength = 1;
+			p.thermostatSpeed = 0.1;
+			p.thermostatTemperature = 100;
+
+			updateBounds(simulation);
+
+			var particleCount = 200;
+			var initialSpeed = 10;
+			for (var i = 0; i < particleCount; i++) {
+				var particle = new Particle();
+				particle.position = randomDiscInRect(simulation.boxBounds, particle.radius);
+				v2.set(particle.velocity, randomGaussian(), randomGaussian());
+				v2.scale(particle.velocity, particle.velocity, 10);
+				addParticle(simulation, particle);
+			}
+
+			setToolbarAvailableTools(simulation.toolbar, ["attract"]);
+		}
+	});
+</script>
+
+  </div>
+
+  <div class="threeColumn">
+    <p><strong>Water</strong> is <em>many tiny things</em> sloshing around</p>
+
+    <script>
+	var waterSim = createSimulationHere({
+		pixelWidth: 250,
+		pixelHeight: 250,
+		initialize: function(simulation)
+		{
+			var p = simulation.parameters;
+			p.boxWidth = 60;
+			p.gravityAcceleration = 1;
+			p.thermostatSpeed = 0.1;
+			p.thermostatTemperature = 1;
+			p.repelStrength = 0.2;
+			//p.isOnlyHardSpheres = true;
+
+			updateBounds(simulation);
+			setWallsAlongBorder(simulation);
+
+			var particleCount = 200;
+			var particles = [];
+			for (var i = 0; i < particleCount; i++) {
+				var particle = new Particle();
+				particle.position = randomPointInRect(simulation.boxBounds);
+				particles.push(particle);
+			}
+			addParticlesRandomly(simulation, particles);
+
+			var ljInteraction = new LennardJonesInteraction();
+			ljInteraction.separation *= 0.8;
+			setInteraction(simulation, 0, 0, ljInteraction);
+
+			setToolbarAvailableTools(simulation.toolbar, ["repel"]);
+		}
+	});
+
+</script>
+
+  </div>
+
+  <div class="threeColumn">
+
+    <p><strong>Normal-sized things</strong> are <em>many tiny things</em> stuck together</p>
+
+    <script>
+	var solidSim = createSimulationHere({
+		pixelWidth: 250,
+		pixelHeight: 250,
+		initialize: function(simulation)
+		{
+			var p = simulation.parameters;
+			p.boxWidth = 40;
+			p.gravityAcceleration = 1;
+			p.dragStrength = 10;
+			p.friction = 0.1;
+
+			updateBounds(simulation);
+
+			var particleCount = 2 * 37;
+			var latticeSpacing = 2;
+			var redBallMiddle = v2(0, 10);
+			var blackBallMiddle = v2(-5, -10);
+			for (var i = 0; i < particleCount; i++) {
+				var halfIndex = Math.floor(i / 2);
+				var particle = new Particle();
+				particle.type = i % 2;
+				if (particle.type == 0)
+				{
+					hexagonalLatticePosition(particle.position, halfIndex, latticeSpacing);
+					v2.add(particle.position, particle.position, blackBallMiddle);
+				}
+				else
+				{
+					particle.color = Color.red;
+					hexagonalLatticePosition(particle.position, halfIndex, latticeSpacing);
+					v2.add(particle.position, particle.position, redBallMiddle);
+				}
+				
+				addParticle(simulation, particle);
+			}
+
+			var ljInteraction = new LennardJonesInteraction();
+			ljInteraction.strength = 200;
+			setInteraction(simulation, 0, 0, ljInteraction);
+			setInteraction(simulation, 1, 1, ljInteraction);
+
+			setToolbarAvailableTools(simulation.toolbar, ["move"]);
+		}
+	});
+</script>
+
+  </div>
+
+</div>
+
+<p>But we can’t see the tiny things without a microscope. They are too small, <em>microscopic</em>. We can only see the <em>macroscopic</em> objects the tiny things make up. (And in the case of air, we can’t see it at all!)</p>
+
+<p>This website is a <em>series of explanations</em> on how the tiny, microscopic things are connected to the big, macroscopic things that we <em>can</em> see, hear and feel. We will ask the question: What are the <em>macroscopic</em> consequences of being made up of many <em>microscopic</em> things?</p>
+
+<p>The explanations will include simulations of many tiny things, as you can see above. Not only are these simulations running in real time, they are also <em>interactive</em>. Try clicking and dragging in the simulations above and see what happens.</p>
+
+<p>If you are ready, <a href="/intro/interaction">let’s start</a>!</p>
+
+<!-- <h2>What do you want to learn more about?</h2>
+
+
+
+
+
+
+
+<a href="/entropy/billiards.html">Entropy – Things Spread Out</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="/heat/heat.html">Heat</a>
+
+
+
+
+
+
+
+
+
+<a href="/billiards/impulse.html">Tiny Billiards</a>
+
+
+
+
+
+
+
+<a href="/intro/interaction.html">Introduction</a>
+
+
+
+<a href="/billiards/interaction/love.html">Particle Attraction</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<a href="/kinetic_energy/single_particle.html">Movement Energy</a>
+
+
+
+<a href="/billiards/many/single_particle.html">Uncountable Billiards</a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -->
+
+	</div>
+
+	<div class="navigationArea">
+		
+			<a href="/intro/interaction">»</a>
+		
+	</div>
+</div>
+<footer>
+	
+		<a href="/intro/interaction">Next <span class="chevron">»</span></a>
+	
+</footer>
 </body>
 </html>

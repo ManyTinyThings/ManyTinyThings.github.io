@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Repulsive potential –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<header>
+    <a class="siteTitle" href="/">Many Tiny Things</a>
+</header>
+<div id="body">
+	<div class="navigationArea">
+		
+			<a href="/states/fast_collision">«</a>
+		
+	</div>
+	
+	<div id="content">
+		
+			<h1>Repulsive potential</h1>
+		
+		<script src="states.js"></script>
+
+<div id="chapter">
+
+  <p>To better understand the attraction, let’s first look at two <em>non-attracting</em> particles.</p>
+
+  <p>I have put the particles on a narrow track, so they can only move back and forth (and not around each other). Imagine the camera rotating with the particles so that they are always on a horizontal line.</p>
+
+  <div class="page">
+
+    <div class="stepLog twoColumn">
+      <script>
+    var repulsivePotentialSim = createSimulation({
+        pixelWidth: 400,
+        pixelHeight: 80,
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0.1;
+            
+            initOneDimSim(simulation);
+
+            var interaction = new RepulsiveInteraction();
+            interaction.strength = 0.1 ;
+            setInteraction(simulation, 0, 0, interaction);
+
+            setToolbarAvailableTools(simulation.toolbar, ["move"]);
+        }
+    });
+</script>
+
+      <p>Try moving the <span class="blue"><strong>blue</strong></span> particle on the left.</p>
+
+      <script>
+    cue(function () {
+        var sim = repulsivePotentialSim;
+        return (sim.mouse.activeParticle === sim.particles[0]);
+    });
+    endStep();
+</script>
+
+      <p>I’ve glued the <span class="blue"><strong>blue</strong></span> particle to the wall so that only the <span class="red"><strong>red</strong></span> one can move. Imagine the camera following the <span class="blue"><strong>blue</strong></span> particle, always keeping it on the same place on the screen.</p>
+
+      <p>Below the particles I have added the <strong>potential</strong> for the interaction between the two particles. Think of it as an “interaction landscape”, where the <span class="red"><strong>red</strong></span> particle can be thought of as a ball rolling in the landscape.</p>
+
+      <p>Drag the right particle towards the left one and see what happens to the ball in the potential.</p>
+
+      <script>
+    cue(function () {
+        var sim = repulsivePotentialSim;
+        var distance = v2.distance(sim.particles[0].position, sim.particles[1].position);
+        return (distance < 2);
+    });
+    endStep();
+</script>
+
+      <p>The ball in the potential landscape rolls up the hill, and then rolls back down again – it bounces off the other one!</p>
+
+    </div>
+
+    <div class="twoColumn">
+      <script>
+    insertHere(repulsivePotentialSim.div);
+
+    var repulsivePotential = function(x) { 
+        return (x < 1) ? (lennardJonesEnergy(x) - lennardJonesEnergy(1)) / 100 : 0;
+    }
+    var repulsiveGraph = createPotentialPlotHere(repulsivePotential, repulsivePotentialSim);
+    setGraphLimits(repulsiveGraph, { yMax: 50});
+</script>
+
+    </div>
+  </div>
+
+</div>
+
+	</div>
+
+	<div class="navigationArea">
+		
+			<a href="/states/attractive_potential">»</a>
+		
+	</div>
+</div>
+<footer>
+	
+		<a href="/states/attractive_potential">Next <span class="chevron">»</span></a>
+	
+</footer>
+</body>
+</html>

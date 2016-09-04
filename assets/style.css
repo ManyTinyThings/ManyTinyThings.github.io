@@ -1,0 +1,166 @@
+@charset "UTF-8";
+a {
+  color: #000; }
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 250px;
+  margin: 0 10px;
+  focus-outline: none; }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 10px;
+    background: #ddd;
+    border: none;
+    border-radius: 5px; }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: black;
+    margin-top: -10px; }
+
+canvas {
+  display: block; }
+  canvas:active {
+    cursor: default; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  font-size: 18px;
+  line-height: 130%;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; }
+
+header {
+  background-color: #eee;
+  min-height: 100px;
+  display: flex;
+  justify-content: center; }
+  header .siteTitle {
+    width: 840px;
+    padding: 50px;
+    font-size: 40px;
+    text-decoration: none; }
+    header .siteTitle, header .siteTitle:visited {
+      color: black; }
+
+#body {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: stretch; }
+
+footer {
+  min-height: 100px;
+  background-color: #eee;
+  display: flex; }
+  footer a {
+    flex: 1;
+    text-decoration: none;
+    font-size: 40px;
+    color: transparent; }
+    footer a:hover {
+      color: #000;
+      cursor: pointer; }
+
+#content {
+  width: 840px;
+  padding: 50px;
+  margin-top: -30px; }
+
+.navigationArea {
+  flex: 1;
+  display: flex; }
+  .navigationArea a {
+    flex: 1;
+    font-size: 100px;
+    font-family: serif;
+    text-decoration: none;
+    color: transparent;
+    cursor: default; }
+    .navigationArea a:hover {
+      color: #000;
+      background-color: #eee;
+      cursor: pointer; }
+
+.chevron {
+  font-family: serif;
+  margin-left: 10px; }
+
+.twoColumn {
+  width: 400px; }
+
+.threeColumn {
+  width: 250px; }
+
+.sideNoteRight {
+  position: absolute;
+  right: 0;
+  width: 400px;
+  margin-left: 410px; }
+
+.graph {
+  margin: 20px 0; }
+
+.toolbar select {
+  margin-left: 5px;
+  font-size: 18px; }
+
+.navigationBar {
+  display: flex;
+  justify-content: flex-end; }
+  .navigationBar .navigationButton {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: white;
+    font-size: 20px; }
+  .navigationBar .navigationButton:active {
+    color: black;
+    background-color: #ccc; }
+  .navigationBar .navigationButton.disabled:active {
+    color: graytext;
+    background-color: white; }
+
+.outsideMargin, .stepLog .incomplete:before, .stepLog .complete:before {
+  position: absolute;
+  left: -1em;
+  font-size: 2em; }
+
+.stepLog {
+  position: relative; }
+  .stepLog.isCompleted:after {
+    content: "●";
+    font-size: 40px;
+    position: absolute;
+    left: 50%; }
+  .stepLog p {
+    margin-top: 0;
+    margin-bottom: 1em; }
+  .stepLog > * {
+    opacity: 0;
+    transition: opacity 1s; }
+  .stepLog .incomplete:before {
+    content: "☐"; }
+  .stepLog .complete:before {
+    content: "☑"; }
+
+.flex, .controls, .page {
+  display: flex;
+  justify-content: space-between; }
+
+.centerContent, footer a, .navigationArea a {
+  display: flex;
+  align-items: center;
+  justify-content: center; }
+
+.hidden {
+  display: none; }
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none; }

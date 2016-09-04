@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Attractive potential –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<header>
+    <a class="siteTitle" href="/">Many Tiny Things</a>
+</header>
+<div id="body">
+	<div class="navigationArea">
+		
+			<a href="/states/repulsive_potential">«</a>
+		
+	</div>
+	
+	<div id="content">
+		
+			<h1>Attractive potential</h1>
+		
+		<script src="states.js"></script>
+
+<div id="chapter">
+
+  <div class="page">
+    <div class="stepLog twoColumn">
+      <script>
+    var lennardJonesPotentialSim = createSimulation({
+        pixelWidth: 400,
+        pixelHeight: 80,
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0.2;
+            p.dragStrength = 1;
+            
+            initOneDimSim(simulation);
+
+            var interaction = new LennardJonesInteraction();
+            interaction.strength = 2;
+            setInteraction(simulation, 0, 0, interaction);
+
+            setToolbarAvailableTools(simulation.toolbar, ["move"]);
+        }
+    });
+</script>
+
+      <p>Things get more interesting when the particles attract each other. The potential still has a steep hill that prevents the particles from overlapping too much, but there is now also a valley.</p>
+
+      <p>Drag the <span class="red"><strong>red</strong></span> particle toward the <span class="blue"><strong>blue</strong></span>.</p>
+
+      <script>
+    cue(function () {
+        var sim = lennardJonesPotentialSim;
+        var distance = v2.distance(sim.particles[0].position, sim.particles[1].position);
+        return (distance < 2);
+    });
+    endStep();
+</script>
+
+      <p>If you give the particle a lot of speed it will roll into the valley, up the other side, turn around and go back out. With less speed, the particle will roll back and forth in the valley before settling at the bottom.</p>
+
+      <p>The back-and-forth rolling is why the particles vibrate a bit when they snap together. Without friction, they will keep vibrating forever.</p>
+
+      <script>
+    createSliderHere({
+        object: lennardJonesPotentialSim.parameters,
+        name: "friction",
+        min: 0, max: lennardJonesPotentialSim.parameters.friction,
+        minLabel: "No friction", maxLabel: "Some",
+    });
+</script>
+
+    </div>
+
+    <div class="twoColumn">
+      <script>
+    insertHere(lennardJonesPotentialSim.div);
+    var lennardJonesGraph = createPotentialPlotHere(lennardJonesEnergy, lennardJonesPotentialSim);
+    setGraphLimits(lennardJonesGraph, { yMax: 2 });
+
+        // createTimeSeriesHere({
+        //     timeRange: 10,
+        //     update: function() {
+        //         var sim = lennardJonesPotentialSim;
+        //         var energy = getTotalEnergy(sim);
+        //         return {time: sim.time, data: [energy]};
+        //     },
+        // });
+</script>
+
+    </div>
+  </div>
+
+</div>
+
+	</div>
+
+	<div class="navigationArea">
+		
+			<a href="/states/solid_liquid_gas">»</a>
+		
+	</div>
+</div>
+<footer>
+	
+		<a href="/states/solid_liquid_gas">Next <span class="chevron">»</span></a>
+	
+</footer>
+</body>
+</html>
