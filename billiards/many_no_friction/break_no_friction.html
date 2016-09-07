@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Break Shot –
+			Careful Breakage –
 		
 		Many Tiny Things
 	</title>
@@ -25,13 +25,13 @@
 <div id="body">
 	<div class="navigationArea">
 		
-			<a href="/billiards/impulse">«</a>
+			<a href="break_variable_friction">«</a>
 		
 	</div>
 	
 	<div id="content">
 		
-			<h1>Break Shot</h1>
+			<h1>Careful Breakage</h1>
 		
 		<div id="chapter">
 <div class="page">
@@ -41,7 +41,8 @@
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
-            p.friction = 0.2;
+            p.friction = 0;
+            setBoxWidth(simulation, 90);
 
             initBilliards(simulation, simulation.boxBounds);
 
@@ -50,18 +51,40 @@
     });
 </script>
 
-<p>I added some more balls!</p>
+<p>With <strong>no friction</strong>, it should be even easier to break the triangle than on ice.</p>
 
-<p>You know what to do.</p>
+<p>Shoot the ball very carefully.</p>
 
 <script>
-	cue(isBilliardsTriangleSplit(sim));
-	endStep();
+    var isAiming = false;
+    cue(function() {
+        if (sim.mouse.mode === MouseMode.impulse)
+        {
+            isAiming = true;
+        }
+        var didJustShoot = isAiming && (sim.mouse.mode === MouseMode.none);
+        if (didJustShoot)
+        {
+            isAiming = false;
+            var isEnergyLowEnough = (getTotalEnergy(sim) < 50);
+            if (isEnergyLowEnough)
+            {
+                return true;
+            }
+            else
+            {
+                setResetReminder(sim, true);
+                return false;
+            }
+        }
+        // TODO: use least squares here
+    });
+    endStep();
 </script>
 
-<p>Nice break shot!</p>
+<p>The triangle will break, and the particles will spread out evenly.</p>
 
-<p><em>Wait, why are we playing billiards?</em></p>
+<p>You just need to have <em>patience</em>.</p>
 
 
 </div>
@@ -76,13 +99,13 @@
 
 	<div class="navigationArea">
 		
-			<a href="/billiards/differences">»</a>
+			<a href="soft_hard">»</a>
 		
 	</div>
 </div>
 <footer>
 	
-		<a href="/billiards/differences">Next <span class="chevron">»</span></a>
+		<a href="soft_hard">Next <span class="chevron">»</span></a>
 	
 </footer>
 </body>

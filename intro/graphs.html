@@ -34,10 +34,11 @@
 			<h1>Graphs</h1>
 		
 		<div id="chapter">
-  <div class="page flex">
+<div class="page">
+<div class="stepLog twoColumn">
 
-    <script>
-    var introSim = createSimulation({
+<script>
+    var sim = createSimulation({
         initialize: function(simulation) {
 			var p = simulation.parameters;
 			p.friction = 0.1;
@@ -55,45 +56,43 @@
     });
 </script>
 
-    <div class="stepLog twoColumn">
-      <p>We will explore a number of rather abstract concepts, and to help understand them there will be visualisations accompanying the models.</p>
+<p>To help us understand some of the more tricky concepts, we will use <em>visualisations</em>, mostly <em>graphs</em>.</p>
 
-      <p>Here’s an example:</p>
+<p>Here’s an example of a graph:</p>
 
-      <script>
+<script>
 	createTimeSeriesHere({
 		timeRange: 50,
-		yMax: introSim.boxBounds.height,
+		yMax: sim.boxBounds.height,
 		update: function(graph) {
-            var particle = introSim.particles[0];
-			var height = particle.position[1] + introSim.boxBounds.height / 2 - particle.radius;
-			return {time: introSim.time, data: [height]};
+            var particle = sim.particles[0];
+			var height = particle.position[1] + sim.boxBounds.height / 2 - particle.radius;
+			return {time: sim.time, data: [height]};
 		},
 	})
 </script>
 
-      <p>Try figuring out what this graph shows by throwing around the ball a bit.</p>
+<p>Try figuring out what this graph is showing by throwing around the ball a bit.</p>
 
-      <p>Does it show</p>
+<p>Does it show</p>
 
-      <ul>
-        <li>the speed of the ball over time?</li>
-        <li>the shape of the ball at different heights?</li>
-        <li>the height of the ball over time?</li>
-      </ul>
+<ul>
+  <li>the speed of the ball over time?</li>
+  <li>the shape of the ball at different heights?</li>
+  <li>the height of the ball over time?</li>
+</ul>
 
-      <p>Figure it out yourself, I won’t give you the right answer!</p>
-    </div>
+<p>Figure it out yourself, I won’t give you the right answer!</p>
 
-    <div class="twoColumn">
-      <script>
-	insertHere(introSim.div);
-</script>
 
-    </div>
-  </div>
 </div>
-
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

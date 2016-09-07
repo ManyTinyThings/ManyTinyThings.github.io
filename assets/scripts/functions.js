@@ -437,7 +437,8 @@ function createSlider(opts)
         inverseTransform: identity,
         minLabel: String(opts.min),
         maxLabel: String(opts.max),
-        snapBack: false,
+        isSnapBack: false,
+        isExternallyChangeable: false,
     });
 
     var initialSliderValue = opts.inverseTransform(opts.object[opts.name]);
@@ -464,26 +465,39 @@ function createSlider(opts)
 
     slider.addEventListener("input", function()
     {
-        opts.object[opts.name] = opts.transform(Number(this.value));
+        opts.object[opts.name] = opts.transform(Number(slider.value));
     });
 
-    if (opts.snapBack)
+    if (opts.isSnapBack)
     {
         slider.addEventListener("change", function()
         {
-            this.value = initialSliderValue;
+            slider.value = initialSliderValue;
             opts.object[opts.name] = opts.transform(Number(initialSliderValue));
         });
     }
 
-    var updater = function()
+    var updater;
+
+    if (opts.isExternallyChangeable)
     {
-        slider.value = opts.inverseTransform(opts.object[opts.name]);
-        window.requestAnimationFrame(updater);
+        updater = function()
+        {
+            slider.value = opts.inverseTransform(opts.object[opts.name]);
+            window.requestAnimationFrame(updater);
+        }
+    }
+    else
+    {
+        updater = function()
+        {
+            opts.object[opts.name] = opts.transform(Number(slider.value));
+            window.requestAnimationFrame(updater);
+        }
     }
 
     updater();
-
+    
     return p;
 }
 
@@ -514,22 +528,22 @@ function createCheckbox(opts)
 
 function createButton(opts)
 {   
-    var button = createElement("input");
+    var div = createElement("div");
+    var button = createAndAppend("input", div);
     button.setAttribute("type", "button");
     button.setAttribute("value", opts.label);
     button.addEventListener("click", opts.action);
-    return button;
+    return div;
 }
 
-function createOutput(opts)
+function createOutput(update)
 {
     var p = createElement("p");
-    p.insertAdjacentText("afterbegin", opts.label || "");
     var output = createAndAppend("output", p);
 
     var updater = function()
     {
-        var value = opts.update();
+        var value = update();
         if (isNumber(value))
         {
             output.value = value.toFixed(2);
@@ -546,6 +560,8 @@ function createOutput(opts)
 
     return p;
 }
+
+// TODO: progress bar
 
 // ! Interactive Slides
 
@@ -944,6 +960,24 @@ function initChapter()
 // NOTE: initChapter is always run on every document!
 document.addEventListener("DOMContentLoaded", initChapter);
 
+// ! Cue functions
+
+function waitCue(timeLeft) {
+    var cueFunction = function(dt)
+    {
+        timeLeft -= dt;
+        return (timeLeft <= 0);
+    }
+    return cueFunction;
+}
+
+function minimumEnergyCue(simulation, minEnergy) {
+    var cueFunction = function()
+    {
+        return (getTotalEnergy(simulation) > minEnergy);
+    }
+    return cueFunction;
+}
 
 // ! Toolbar
 
@@ -1058,7 +1092,7 @@ function setToolbarAvailableTools(toolbar, availableToolNames)
     if (availableToolNames.length <= 1)
     {
         toolbar.selectElement.disabled = true;
-        setElementIsVisible(toolbar.div, false);
+        //setElementIsVisible(toolbar.div, false);
     }
 
 }
@@ -2020,14 +2054,46 @@ function addParticlesRandomly(simulation, newParticles)
 
 // ! Billiards
 
-function initBilliards(simulation, particleCount)
+function triangleNumber(k)
+{
+    return k * (k + 1) / 2;
+}
+
+function initBilliards(simulation, rectangle, layerCount)
 {
     simulation.parameters.isOnlyHardSpheres = true;
-    updateBounds(simulation);
-    setWallsAlongBorder(simulation);
-    for (var i = 0; i < particleCount; i++) {
+
+    var r = rectangle;
+
+    var firstParticle = new Particle();
+    firstParticle.color = Color.red;
+    v2.set(firstParticle.position, r.left + r.width / 4, r.center[1]);
+    addParticle(simulation, firstParticle);
+
+    var margin = 0.1;
+    var available = 1 - 2 * margin;
+    var triangleWidth = available * rectangle.width / 2;
+    var triangleHeight = available * rectangle.height;
+
+    var particleRadius = 1;
+    var latticeSpacing = 2.03 * particleRadius;
+
+    if (layerCount === undefined)
+    {
+        var heightInParticles = triangleHeight / latticeSpacing;
+        // NOTE: next line isn't exact
+        var widthInParticleLayers = triangleWidth / (Math.sqrt(3) / 2 * latticeSpacing);
+        layerCount = Math.floor(Math.min(heightInParticles, widthInParticleLayers));
+    }
+    
+
+    var triangleParticleCount = triangleNumber(layerCount);
+
+    for (var particleIndex = 0; particleIndex < triangleParticleCount; particleIndex++) {
         var particle = new Particle();
-        billiardsPosition(particle.position, i, 2.03);
+        triangularLatticePosition(particle.position, particleIndex, latticeSpacing);
+        particle.position[0] += margin * rectangle.width / 2;
+        particle.position[1] += rectangle.center[1];
         addParticle(simulation, particle);
     }
 }
@@ -2051,7 +2117,8 @@ function isBilliardsTriangleSplit(simulation)
     var cueFunction = function(){
         var totalEnergy = getTotalEnergy(simulation);
         var firstBall = simulation.particles[0];
-        var triangleEnergy = totalEnergy - firstBall.kineticEnergy - firstBall.potentialEnergy;
+        var firstEnergy = firstBall.kineticEnergy + firstBall.potentialEnergy;
+        var triangleEnergy = totalEnergy - firstEnergy;
         return (triangleEnergy > 1);    
     }
     
@@ -2115,21 +2182,21 @@ function setWallsAlongBorder(simulation)
     }
 }
 
-// TODO: maybe make this a setter instead, but seems nontrivial
+function setBoxWidth(simulation, boxWidth)
+{
+    var boxHeight = boxWidth / simulation.canvas.width * simulation.canvas.height;
+    updateBounds(simulation, boxWidth, boxHeight);
+}
 
-function updateBounds(simulation)
+function setBoxHeight(simulation, boxHeight)
+{
+    var boxWidth = boxHeight / simulation.canvas.height * simulation.canvas.width;
+    updateBounds(simulation, boxWidth, boxHeight);
+}
+
+function updateBounds(simulation, boxWidth, boxHeight)
 {
     // TODO: scale regions with the updated bounds?
-
-    var aspectRatio = simulation.canvas.width / simulation.canvas.height;
-    var boxWidth = simulation.parameters.boxWidth;
-    var boxHeight = boxWidth / aspectRatio;
-
-    if (simulation.parameters.boxHeight !== null)
-    {
-        boxHeight = simulation.parameters.boxHeight;
-        boxWidth = simulation.parameters.boxHeight * aspectRatio;
-    }
 
     var origin = v2(0, 0);
 
@@ -2330,30 +2397,25 @@ function square(x)
     return x * x;
 }
 
-function pickParticle(simulation, pickPosition, extraRadius)
+function findClosestParticle(simulation, position)
 {
-    extraRadius = extraRadius || 0;
-
+    var minDistance = Infinity;
+    var closestParticleIndex = -1;
     for (var particleIndex = 0; particleIndex < simulation.particles.length;
         ++particleIndex)
     {
         var particle = simulation.particles[particleIndex];
-        var squaredRadius = square(particle.radius + extraRadius);
-        var between = v2.alloc();
-        v2.subtract(between, pickPosition, particle.position);
-        var inside = v2.square(between) < squaredRadius;
-        v2.free(between);
-        if (inside)
+
+        var distanceToCenter = v2.distance(position, particle.position);
+        var distanceToRim = distanceToCenter - particle.radius;
+       
+        if (distanceToRim < minDistance)
         {
-            return particleIndex;
+            minDistance = distanceToRim;
+            closestParticleIndex = particleIndex;
         }
     }
-    return -1;
-}
-
-function setResetButtonVisibility(simulation, isVisible)
-{
-    set
+    return closestParticleIndex;
 }
 
 function createSimulationHere(opts)
@@ -2386,6 +2448,7 @@ function createSimulation(opts)
     simulation.resetButton = createButton({
         label: "Reset",
         action: function() {
+            simulation.resetButton.classList.remove("pulsing");
             resetSimulation(simulation);
         },
     });
@@ -2436,6 +2499,11 @@ function createSimulation(opts)
     return simulation;
 }
 
+function setResetReminder(simulation, isReminding)
+{
+    setElementClass(simulation.resetButton, "pulsing", isReminding);
+}
+
 function resetSimulation(simulation)
 {
     //
@@ -2448,11 +2516,9 @@ function resetSimulation(simulation)
     p.maxInitialSpeed = 0.1;
     p.soundEnabled = false;
     p.maxParticleCount = 0;
-    p.shouldResetOnExplosion = true;
+    p.shouldRemindOnEscape = true;
 
     // box
-    p.boxWidth = 20;
-    p.boxHeight = null;
     p.isPeriodic = false;
 
     // collisions
@@ -2516,7 +2582,7 @@ function resetSimulation(simulation)
     simulation.regions = [];
 
     getInteraction(simulation, 0, 0); // NOTE: this get sets up default interaction
-    updateBounds(simulation);
+    setBoxWidth(simulation, 25);
 
     // ! User initialization
 
@@ -2528,8 +2594,6 @@ function resetSimulation(simulation)
         simulation.parameters.isSlowCollisionEnabled = true;
         simulation.parameters.isSlowParticleParticleCollisionEnabled = true;
     }
-
-    updateBounds(simulation);
 
     if (simulation.walls === null)
     {
@@ -2810,18 +2874,31 @@ var updateSimulation = function()
 
         if (simulation.mouse.leftButton.down)
         {
-            var leftButtonJustDown = (simulation.mouse.leftButton.transitionCount > 0);
-            var hitParticleIndex = pickParticle(simulation, simulation.mouse.worldPosition);
-            var tool = simulation.toolbar.selectedToolName;
+            var closestParticleIndex = findClosestParticle(simulation, simulation.mouse.worldPosition);
+            var closestParticleExists = (closestParticleIndex >= 0);
 
+            if (closestParticleExists)
+            {
+                var closestParticle = simulation.particles[closestParticleIndex];
+                var maxDistance = 5 / simulation.pixelWidth * simulation.boxBounds.width;
+                var distanceToCenter = v2.distance(closestParticle.position, simulation.mouse.worldPosition);
+                var distanceToRim = distanceToCenter - closestParticle.radius;
+                closestParticleExists = (distanceToRim < maxDistance);
+            }
+
+            // TODO: separate MouseMode and tool concepts
+            // TODO: make tool an enum too
+
+            var leftButtonJustDown = (simulation.mouse.leftButton.transitionCount > 0);
             if (leftButtonJustDown)
             {
-                simulation.mouse.mode = MouseMode[tool];
-                if (simulation.mouse.mode == MouseMode.impulse)
+                simulation.mouse.mode = MouseMode[simulation.toolbar.selectedToolName];
+
+                if (simulation.mouse.mode === MouseMode.impulse)
                 {
-                    if (hitParticleIndex >= 0)
+                    if (closestParticleExists)
                     {
-                        simulation.mouse.activeParticle = simulation.particles[hitParticleIndex];
+                        simulation.mouse.activeParticle = closestParticle;
                     }
                     else
                     {
@@ -2829,51 +2906,39 @@ var updateSimulation = function()
                     }
                 }
 
-                if (simulation.mouse.mode == MouseMode.move)
+                if (simulation.mouse.mode === MouseMode.move)
                 {
-                    if (hitParticleIndex >= 0)
+                    if (closestParticleExists)
                     {
-                        simulation.mouse.mode = MouseMode.move;
-                        simulation.mouse.activeParticle = simulation.particles[hitParticleIndex];
+                        simulation.mouse.activeParticle = closestParticle;
 
                         simulation.mouse.selectedParticleIndices.length = 0;
-                        simulation.mouse.selectedParticleIndices.push(hitParticleIndex);
+                        simulation.mouse.selectedParticleIndices.push(closestParticleIndex);    
                     }
                     else
                     {
                         simulation.mouse.mode = MouseMode.none;
                     }
                 }
-
-                if (simulation.mouse.mode == MouseMode.select)
+                
+                if (simulation.mouse.mode === MouseMode.select)
                 {
-                    simulation.mouse.mode = MouseMode.select;
                     simulation.mouse.selectAnchorPoint = v2.clone(simulation.mouse.worldPosition);
-
                     simulation.mouse.selectedParticleIndices.length = 0;
                 }
             }
 
-            if (simulation.mouse.mode == MouseMode.create)
+            if (simulation.mouse.mode === MouseMode.create)
             {
                 var particle = simulation.particleGenerator();
                 v2.copy(particle.position, simulation.mouse.worldPosition);
-
-                // TODO: this check should be made in addParticle
-                var extraRadius = 2;
-                var isCloseToParticle = (pickParticle(simulation, simulation.mouse.worldPosition, extraRadius) >= 0);
-
-                if (!isCloseToParticle)
-                {
-
-                    addParticle(simulation, particle);
-                }
+                addParticle(simulation, particle);
             }
-            else if (simulation.mouse.mode == MouseMode.delete)
+            else if (simulation.mouse.mode === MouseMode.delete)
             {
-                if (hitParticleIndex >= 0)
+                if (closestParticleExists)
                 {
-                    removeParticle(simulation, hitParticleIndex);
+                    removeParticle(simulation, closestParticleIndex);
                 }
             }
         }
@@ -3121,16 +3186,15 @@ var updateSimulation = function()
                     var isFinite = v2.isFinite(particle.position);
                     var isOutside = (!params.isPeriodic) && (!doesRectContainPoint(simulation.boxBounds, particle.position));
 
-                    // TODO: reset on isOutside too? or maybe add shouldResetOnOutside
-                    if (params.shouldResetOnExplosion && (!isFinite))
-                    {
-                        resetSimulation(simulation);
-                        return;
-                    }
                     if ((!isFinite) || isOutside)
                     {
                         removeParticle(simulation, particleIndex);
                         particleIndex -= 1;
+
+                        if (params.shouldRemindOnEscape)
+                        {
+                            setResetReminder(simulation, true);
+                        }
                     }
                 }
 
@@ -3371,7 +3435,7 @@ var updateSimulation = function()
                         v2.subtract(mouseToParticle, particle.position, simulation.mouse.worldPosition);
 
                         // NOTE: constant force
-                        var repelFactor = - params.boxWidth / 10 / v2.magnitude(mouseToParticle);
+                        var repelFactor = - simulation.boxBounds.width / 10 / v2.magnitude(mouseToParticle);
 
                         v2.scaleAndAdd(particle.acceleration, particle.acceleration,
                             mouseToParticle, repelFactor * params.attractStrength / particle.mass);
@@ -3388,7 +3452,7 @@ var updateSimulation = function()
                         v2.subtract(mouseToParticle, particle.position, simulation.mouse.worldPosition);
 
                         // NOTE: 1/r force
-                        var repelFactor = params.boxWidth / v2.square(mouseToParticle);
+                        var repelFactor = simulation.boxBounds.width / v2.square(mouseToParticle);
 
                         v2.scaleAndAdd(particle.acceleration, particle.acceleration,
                             mouseToParticle, repelFactor * params.repelStrength / particle.mass);

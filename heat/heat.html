@@ -33,7 +33,11 @@
 		
 			<h1>Heat</h1>
 		
-		<p>To a person like you and me, heat is very important. We heat our food, get hot in the sun, feel the body heat when hugging someone, avoid touching things that are too hot and with too little heat we start freezing.</p>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<p>To a person like you and me, heat is very important. We heat our food, get hot in the sun, feel the body heat when hugging someone, avoid touching things that are too hot and with too little heat we start freezing.</p>
 
 <p>But what <em>is</em> heat?</p>
 
@@ -45,7 +49,7 @@
             var p = simulation.parameters;
             p.friction = 0.1;
             p.dt = 0.005;
-            p.boxWidth = 30;
+            setBoxWidth(simulation, 30);
 
             updateBounds(simulation);
 
@@ -294,6 +298,15 @@ _Heat is a kind of energy: the movement energy of many small things moving aroun
 </script>
 
 
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

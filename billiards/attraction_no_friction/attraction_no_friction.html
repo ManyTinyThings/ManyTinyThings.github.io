@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Break Shot –
+			Frictionless attraction –
 		
 		Many Tiny Things
 	</title>
@@ -25,13 +25,13 @@
 <div id="body">
 	<div class="navigationArea">
 		
-			<a href="/billiards/impulse">«</a>
+			<a href="/billiards/combined/many_no_friction">«</a>
 		
 	</div>
 	
 	<div id="content">
 		
-			<h1>Break Shot</h1>
+			<h1>Frictionless attraction</h1>
 		
 		<div id="chapter">
 <div class="page">
@@ -41,7 +41,8 @@
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
-            p.friction = 0.2;
+            p.friction = 0;
+            setBoxWidth(simulation, 90);
 
             initBilliards(simulation, simulation.boxBounds);
 
@@ -50,18 +51,20 @@
     });
 </script>
 
-<p>I added some more balls!</p>
+<p>Before you break the triangle: What do you think will happen?</p>
 
-<p>You know what to do.</p>
+<p>Break the triangle.</p>
 
 <script>
-	cue(isBilliardsTriangleSplit(sim));
-	endStep();
+    cue(isBilliardsTriangleSplit(sim));
+    endStep();
 </script>
 
-<p>Nice break shot!</p>
+<p>The particles never stop moving, as expected.</p>
 
-<p><em>Wait, why are we playing billiards?</em></p>
+<p>Because they never stop moving, we don’t need to give them a kick several times for them to spread out.</p>
+
+<p>No matter how softly you shoot, they will eventually spread out evenly. (Try it!)</p>
 
 
 </div>
@@ -76,13 +79,13 @@
 
 	<div class="navigationArea">
 		
-			<a href="/billiards/differences">»</a>
+			<a href="/billiards/FILL_ME_IN">»</a>
 		
 	</div>
 </div>
 <footer>
 	
-		<a href="/billiards/differences">Next <span class="chevron">»</span></a>
+		<a href="/billiards/FILL_ME_IN">Next <span class="chevron">»</span></a>
 	
 </footer>
 </body>

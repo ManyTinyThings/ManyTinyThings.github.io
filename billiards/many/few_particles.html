@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			A Few Particles –
+			More Particles –
 		
 		Many Tiny Things
 	</title>
@@ -31,48 +31,42 @@
 	
 	<div id="content">
 		
-			<h1>A Few Particles</h1>
+			<h1>More Particles</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
-            p.boxWidth = 40;
+            setBoxWidth(simulation, 40);
 
-            initBilliards(simulation, 16);
+            initBilliards(simulation, simulation.boxBounds);
 
     		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Here’s some more particles!</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>Here’s a few particles, enough to play billiards.</p>
+<p>While they are enough to play billiards with, it isn’t really that many.</p>
 
-      <p>Break shot!</p>
+<p><em>More!</em></p>
 
-      <script>
-    cue(isBilliardsTriangleSplit(sim));
-    endStep();
-</script>
 
-      <p>Note how they spread out pretty evenly across the box.</p>
 
-    </div>
-
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

@@ -33,17 +33,21 @@
 		
 			<h1>Sticky Billiards</h1>
 		
-		<script src="shared.js"></script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script src="shared.js"></script>
 
 <script>
 
-    var interactionSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
-            p.friction = 0.1;
-            p.boxWidth = 25
+            p.friction = 0.2;
+            setBoxWidth(simulation, 30);
 
-            initBilliards(simulation, 11);
+            initBilliards(simulation, simulation.boxBounds);
 
             p.isOnlyHardSpheres = false;
 
@@ -51,40 +55,33 @@
             ljInteraction.strength = 3;
             setInteraction(simulation, 0, 0, ljInteraction);
 
+            // TODO: maybe have the red particle not stick to the others
+
             setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Back to billiards!</p>
 
-  <div class="page">
+<p>Split the triangle.</p>
 
-    <div class="stepLog twoColumn">
-
-      <p>Back to billiards!</p>
-
-      <p>Split the triangle.</p>
-
-      <script>
-    cue(isBilliardsTriangleSplit(interactionSim));
+<script>
+    cue(isBilliardsTriangleSplit(sim));
     endStep();
 </script>
 
-      <p>It’s harder when they are sticking together, but with enough speed it’s possible.</p>
+<p>It’s harder when they are sticking together, but with enough speed it’s possible.</p>
 
-    </div>
-
-    <div class="twoColumn">
-      <script>
-    insertHere(interactionSim.div);
-</script>
-
-    </div>
-  </div>
 
 </div>
-
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

@@ -34,18 +34,18 @@
 			<h1>Interacting</h1>
 		
 		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
 
-  <div class="page flex">
-
-    <script>
-    var introSim = createSimulation({
+<script>
+    var sim = createSimulation({
         initialize: function(simulation) {
 			var p = simulation.parameters;
 			p.friction = 0.1;
 			p.gravityAcceleration = 1;
 			p.dragStrength = 2;
-            //p.isOnlyHardSpheres = true;
-            //p.coefficientOfRestitution = 0.95;
+            p.isOnlyHardSpheres = true;
+            p.coefficientOfRestitution = 0.95;
 
 			var particle = new Particle();
 			v2.set(particle.position, 0, particle.radius - simulation.boxBounds.height / 2);
@@ -56,38 +56,35 @@
     });
 </script>
 
-    <div class="stepLog twoColumn">
-      <p>To the right is a ball.</p>
+<p>To the right is a ball.</p>
 
-      <p>Pick up the ball and throw it!</p>
+<p>Pick up the ball and throw it!</p>
 
-      <script>
+<script>
 	cue(function() {
-		var energy = getTotalEnergy(introSim);
+		var energy = getTotalEnergy(sim);
 		return (energy > 1);
 	});
 	endStep();
 </script>
 
-      <p>Well done!</p>
+<p>Well done!</p>
 
-      <p>I will usually ask you to perform some simple task (like throwing the ball), just to get you started interacting with the simulations.</p>
+<p>I will usually ask you to perform some simple task (like throwing the ball), just to get you started interacting with the simulations.</p>
 
-      <p>You are of course free to keep playing with them for as long as you’d like!</p>
+<p>You are of course free to keep playing with them for as long as you’d like!</p>
 
-      <p>When you are ready to move on, click at the bottom of the page ↓ or in the right margin →.</p>
+<p>When you are ready to move on, click at the bottom of the page ↓ or in the right margin →.</p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
-	insertHere(introSim.div);
-</script>
-
-    </div>
-  </div>
 </div>
-
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

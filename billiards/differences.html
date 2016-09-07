@@ -33,58 +33,58 @@
 		
 			<h1>Differences</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
-            p.boxWidth = 30;
 
-            initBilliards(simulation, 16);
+            initBilliards(simulation, simulation.boxBounds);
 
     		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Remember the <strong>many tiny things</strong> I was talking about earlier?</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-
-      <p>Remember the <strong>many tiny things</strong> I was talking about earlier?</p>
-
-      <p>The tiny things are sort of like <em>tiny billiard balls</em>.
+<p>The tiny things are sort of like <em>tiny billiard balls</em>.
 They <em>move</em> like billiard balls, and <em>bounce</em> like billiard balls.</p>
 
-      <p>There are three big differences, though:</p>
+<p>There are three big differences, though:</p>
 
-      <ol>
-        <li><a href="/billiards/friction/stopping">They <strong>never stop</strong> moving</a>.</li>
-        <li><a href="/billiards/many/single_particle">There are <strong>a lot more than 16</strong> of them</a>.</li>
-        <li><a href="/billiards/interaction/love">They can <strong>like</strong> or <strong>dislike</strong> each other</a>.</li>
-      </ol>
+<ol>
+  <li><a href="/billiards/friction/stopping">They <strong>never stop</strong> moving</a>.</li>
+  <li><a href="/billiards/many/single_particle">There are <strong>a lot more than 16</strong> of them</a>.</li>
+  <li><a href="/billiards/interaction/love">They can <strong>like</strong> or <strong>dislike</strong> each other</a>.</li>
+</ol>
 
-      <p>Click the items in the list above to explore them.</p>
+<p>Click the items in the list above to explore them.</p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">
 		
+			<a href="/billiards/combining">»</a>
+		
 	</div>
 </div>
 <footer>
+	
+		<a href="/billiards/combining">Next <span class="chevron">»</span></a>
 	
 </footer>
 </body>

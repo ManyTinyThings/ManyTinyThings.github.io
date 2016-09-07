@@ -31,7 +31,11 @@
 		
 			<h1>Evaporation</h1>
 		
-		<p>If you leave a glass of water somewhere and come back a few days later, some or all of the water will be gone. Here is a timelapse of the water slowly disappearing.</p>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<p>If you leave a glass of water somewhere and come back a few days later, some or all of the water will be gone. Here is a timelapse of the water slowly disappearing.</p>
 
 <iframe width="840" height="472" src="https://www.youtube.com/embed/VQ0qky-MNP8?showinfo=0&amp;rel=0" frameborder="0" allowfullscreen=""></iframe>
 
@@ -55,7 +59,7 @@
         	p.thermostatSpeed = 0.02;
         	p.thermostatTemperature = freezingTemperature;
         	p.maxParticleCount = 100;
-			p.boxWidth = 50;
+			setBoxWidth(simulation, 50);
 
         	simulation.particleGenerator = function () {
         		var particle = new Particle();
@@ -133,6 +137,15 @@
 
 </div>
 
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

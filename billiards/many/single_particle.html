@@ -25,7 +25,7 @@
 <div id="body">
 	<div class="navigationArea">
 		
-			<a href="/intro/graphs">«</a>
+			<a href="/billiards/differences">«</a>
 		
 	</div>
 	
@@ -33,40 +33,40 @@
 		
 			<h1>One Particle</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
 
-            initBilliards(simulation, 1);
+            initBilliards(simulation, simulation.boxBounds, 0);
 
     		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>A single ball makes for pretty boring billiards.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>A single ball makes for pretty boring billiards.</p>
+<p>And the world is made of <strong>many</strong> tiny things, not <strong>one</strong> tiny thing.</p>
 
-      <p>And the world is hardly made up from <em>one</em> tiny thing, it’s made up of <em>lots and lots</em> of them.</p>
+<p>(If there was only one tiny thing, would we even call it tiny?)</p>
 
-      <p>If we want to explore things being made up of many tiny things, then we definitely need more than one of them!</p>
+<p><em>We need more particles.</em></p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

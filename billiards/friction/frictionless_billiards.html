@@ -33,49 +33,46 @@
 		
 			<h1>Frictionless Billiards</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0;
+            setBoxWidth(simulation, 30);
 
-            initBilliards(simulation, 7);
+            initBilliards(simulation, simulation.boxBounds);
 
     		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>How would it be to play billiards without friction?</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>How would it be to play billiards without friction?</p>
+<p>You tell me.</p>
 
-      <p>You tell me.</p>
-
-      <script>
+<script>
     cue(isBilliardsTriangleSplit(sim));
     endStep();
 </script>
 
-      <p><em>Madness!</em></p>
+<p><em>Madness!</em></p>
 
-      <p>Some particles move faster than others, but again, <em>they never stop</em>.</p>
+<p>This is how the tiny, microscopic particles work. They keep bouncing all over and never stop.</p>
 
-      <p>This is how the tiny, microscopic particles work. They keep bouncing all over and never stop.</p>
 
-    </div>
-
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

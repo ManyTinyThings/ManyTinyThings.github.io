@@ -33,11 +33,15 @@
 		
 			<h1>Particles in Love</h1>
 		
-		<script src="shared.js"></script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script src="shared.js"></script>
 
 <script>
 
-    var interactionSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.1;
@@ -55,72 +59,43 @@
 
 </script>
 
-<div id="chapter">
+<p>Move these particles closer to each other.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>Move these particles closer to each other.</p>
-
-      <script>
+<script>
     cue(function () {
-        var distance = v2.distance(interactionSim.particles[0].position, interactionSim.particles[1].position);
+        // TODO: timer here
+        var distance = v2.distance(sim.particles[0].position, sim.particles[1].position);
         return (distance < 3);   
     });
     endStep();
 </script>
 
-      <p>They seem to like each other! As they come closer, they attract and snap together.</p>
+<p>They seem to like each other! As they come closer, they attract and snap together.</p>
 
-      <p>Can you get them to let go?</p>
+<p>Can you get them to let go?</p>
 
-      <script>
+<script>
     cue(function () {
-        var distance = v2.distance(interactionSim.particles[0].position, interactionSim.particles[1].position);
+        var distance = v2.distance(sim.particles[0].position, sim.particles[1].position);
         return (distance > 6);
     });
     endStep();
 </script>
 
-      <p>It takes some effort!</p>
+<p>It takes some effort!</p>
 
-      <p>There’s a <em>force</em> binding the particles together. You can think of this force as <em>love</em>: it’s something that can’t be explained, it’s just there, binding things together.</p>
+<p>There’s a <em>force</em> binding the particles together. You can think of this force as <em>love</em>: it’s something that can’t be explained, it’s just there, binding things together.</p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
-    insertHere(interactionSim.div);
-    /*
-    insertHere(createOutput({
-        label: "distance: ",
-        update: function () {
-            var distance = v2.distance(interactionSim.particles[0].position, interactionSim.particles[1].position);
-            return distance.toFixed(2);
-        }
-    }));
-    insertHere(createOutput({
-        label: "average speed: ",
-        update: function () {
-            var speed = ensembleSpeed(interactionSim.particles);
-            return speed.toFixed(2);
-        }
-    }));
-    */
-    // createTimeSeriesHere({
-    //     timeRange: 20,
-    //     update: function() {
-    //         var sim = interactionSim;
-    //         var energy = getTotalEnergy(sim);
-    //         return {time: sim.time, data: [energy]};
-    //     },
-    // });
-</script>
-
-    </div>
-  </div>
 
 </div>
-
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

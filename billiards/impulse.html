@@ -33,52 +33,51 @@
 		
 			<h1>Impulse</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
 
-            initBilliards(simulation, 1);
+            initBilliards(simulation, simulation.boxBounds, 0);
 
     		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Let’s begin by playing some billiards.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>Let’s begin by playing some billiards.</p>
+<p>The <strong>impulse</strong> tool works sort of like a billiards cue.</p>
 
-      <p>The <strong>impulse</strong> tool works sort of like a billiards cue.
-Hold down the mouse button and drag to aim, and when you release the button, you <em>shoot</em>!</p>
+<p>Hold down the mouse button and drag to aim, and when you release the button, you <em>shoot</em>!</p>
 
-      <p>Try it out!</p>
+<p>Try it out!</p>
 
-      <script>
+<script>
 	cue(function() {
 		return (getTotalEnergy(sim) > 0.1);
 	});
 	endStep();
 </script>
 
-      <p>Nice!</p>
+<p>Nice!</p>
 
-      <p>It’s not really billiards with just one ball, though…</p>
+<p>It’s not really billiards with just one ball, though…</p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

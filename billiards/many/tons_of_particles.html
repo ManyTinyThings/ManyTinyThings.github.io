@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Tons of Particles –
+			Still Not Enough –
 		
 		Many Tiny Things
 	</title>
@@ -31,48 +31,46 @@
 	
 	<div id="content">
 		
-			<h1>Tons of Particles</h1>
+			<h1>Still Not Enough</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
-            p.boxWidth = 200;
+            setBoxWidth(simulation, 200);
 
-            initBilliards(simulation, 1036);
+            initBilliards(simulation, simulation.boxBounds);
 
     		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p><em>Now we’re talking!</em></p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p><em>Now we’re talking!</em></p>
+<p>Well, <strong>no</strong>.</p>
 
-      <p>Well, no.</p>
-
-      <p>This is over 1000 particles, and the simulation can’t really handle it. 
+<p>This is over 1000 particles, and the computer can’t really handle it. 
 Also, the particles become so small on the screen that you can barely see them, let alone interact with them.</p>
 
-      <p>And we’re still so, so far away from the amount of particles in just a single breath.</p>
+<p>And we’re still so, so far away.</p>
 
-      <p>You would need approximately 10,000,000,000,000,000,000 (or 10<sup>19</sup>) boxes with 1000 particles in each, just to get the amount of particles in a single breath.</p>
+<p>You would need approximately 10,000,000,000,000,000,000 (or 10<sup>19</sup>) boxes with 1000 particles in each, just to get the amount of air particles in a single breath.</p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

@@ -31,7 +31,11 @@
 		
 			<h1>Friction</h1>
 		
-		<div class="page">
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<div class="page">
   <script>
     var dropBallSim = createSimulation({
         initialize: function (simulation) {
@@ -87,7 +91,7 @@
             // p.onlyHardSpheres = true;
             p.lennardJonesStrength = 0.1;
             p.dt = 0.01;
-            p.boxWidth = 50;
+            setBoxWidth(simulation, 50);
 
 
             var bigRadius = 5;
@@ -155,6 +159,15 @@
 </script>
 
 
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

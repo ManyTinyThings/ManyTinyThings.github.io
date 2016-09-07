@@ -2,6 +2,9 @@
 a {
   color: #000; }
 
+li {
+  margin-bottom: 10px; }
+
 input[type="range"] {
   -webkit-appearance: none;
   width: 250px;
@@ -164,3 +167,27 @@ footer {
 .disabled {
   opacity: 0.5;
   pointer-events: none; }
+
+.pulsing {
+  position: relative; }
+  .pulsing:after {
+    content: "";
+    position: absolute;
+    display: block;
+    z-index: -1000;
+    width: 120%;
+    height: 120%;
+    border-radius: 20%;
+    left: -10%;
+    top: -10%;
+    animation-duration: 2s;
+    animation-name: pulse;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-direction: alternate; }
+
+@keyframes pulse {
+  from {
+    background-color: transparent; }
+  to {
+    background-color: red; } }

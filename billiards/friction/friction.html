@@ -33,69 +33,64 @@
 		
 			<h1>Friction</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script src="shared.js"></script>
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
-
-            initBilliards(simulation, 1);
+            
+            var particle = new Particle();
+            particle.color = Color.red;
+            addParticle(simulation, particle);
 
     		setToolbarAvailableTools(simulation.toolbar, ["move"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>The force that that causes the ball to slow down is called <strong>friction</strong>.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>The force that that causes the ball to slow down is called <strong>friction</strong>.</p>
+<p>Some things have more friction than others:</p>
 
-      <p>Some things have more friction than others:</p>
+<ul>
+  <li>if you roll the ball in <strong>mud</strong>, it will slow down very quickly,</li>
+  <li>but if you slide it on <strong>ice</strong>, it can go very far before stopping.</li>
+</ul>
 
-      <ul>
-        <li>if you roll the ball in <strong>mud</strong>, it will slow down very quickly,</li>
-        <li>but if you slide it on <strong>ice</strong>, it can go very far before stopping.</li>
-      </ul>
+<p>Here is a slider that changes the friction of the billiards table to be more <em>mud-like</em> (<em>more</em> friction) or <em>ice-like</em> (<em>less</em> friction).</p>
 
-      <p>Here is a slider that changes the friction of the billiards table to be more <em>mud-like</em> (<em>more</em> friction) or <em>ice-like</em> (<em>less</em> friction).</p>
-
-      <script>
-createSliderHere({
-    object: sim.parameters,
-    name: "friction",
-    min: 0.04, max: 2,
-    minLabel: "Ice", maxLabel: "Mud",
-    transform: x => Math.exp(x),
-    inverseTransform: x => Math.log(x),
-});
+<script>
+createIceMudSliderHere();
 </script>
 
-      <p>Change the friction with the slider and drag around the ball to get a feel for how friction works.</p>
+<p>Change the friction with the slider and drag around the ball to get a feel for how friction works.</p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">
 		
-			<a href="/billiards/friction/no_friction">»</a>
+			<a href="/billiards/friction/frictionful_billiards">»</a>
 		
 	</div>
 </div>
 <footer>
 	
-		<a href="/billiards/friction/no_friction">Next <span class="chevron">»</span></a>
+		<a href="/billiards/friction/frictionful_billiards">Next <span class="chevron">»</span></a>
 	
 </footer>
 </body>

@@ -33,28 +33,28 @@
 		
 			<h1>Stopping</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
 
-            initBilliards(simulation, 1);
+            initBilliards(simulation, simulation.boxBounds);
 
     		setToolbarAvailableTools(simulation.toolbar, ["move"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Normally, if you stop pushing or pulling something, it will eventually stop moving.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>Normally, if you stop pushing or pulling something, it will eventually stop moving.</p>
+<p>Drag around the ball a bit and then look at what happens when you let go.</p>
 
-      <p>Drag around the ball a bit and then look at what happens when you let go.</p>
-
-      <script>
+<script>
     var isDragging = false
 	cue(function () {
         if (sim.mouse.mode === MouseMode.move)
@@ -68,19 +68,17 @@
 	endStep();
 </script>
 
-      <p>When you let go, the ball starts slowing down and eventually stops.</p>
+<p>When you let go, the ball starts slowing down and eventually stops.</p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

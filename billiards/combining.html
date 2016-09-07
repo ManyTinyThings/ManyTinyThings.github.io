@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Break Shot –
+			Combining –
 		
 		Many Tiny Things
 	</title>
@@ -25,13 +25,13 @@
 <div id="body">
 	<div class="navigationArea">
 		
-			<a href="/billiards/impulse">«</a>
+			<a href="/billiards/differences">«</a>
 		
 	</div>
 	
 	<div id="content">
 		
-			<h1>Break Shot</h1>
+			<h1>Combining</h1>
 		
 		<div id="chapter">
 <div class="page">
@@ -41,7 +41,7 @@
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
-            p.friction = 0.2;
+            p.friction = 0;
 
             initBilliards(simulation, simulation.boxBounds);
 
@@ -50,18 +50,25 @@
     });
 </script>
 
-<p>I added some more balls!</p>
+<p>What have we learned?</p>
 
-<p>You know what to do.</p>
+<p>Everything is made up of <strong>tiny particles</strong> that behave kind of like billiards balls, except:</p>
 
-<script>
-	cue(isBilliardsTriangleSplit(sim));
-	endStep();
-</script>
+<ul>
+  <li>The particles <strong>never stop moving</strong>, because they have <strong>no friction</strong>.</li>
+  <li>There are <strong>incredible many</strong> tiny particles, which means they tend to <strong>spread out everywhere</strong>.</li>
+  <li>The particles can <strong>attract each other</strong>, so they can make up <strong>bigger things</strong>.</li>
+</ul>
 
-<p>Nice break shot!</p>
+<p>We have looked at these three properties separately.</p>
 
-<p><em>Wait, why are we playing billiards?</em></p>
+<p>Let’s now put them together and see what happens!</p>
+
+<ul>
+  <li><a href="/billiards/attraction_many/TODO">Attraction &amp; many particles</a></li>
+  <li><a href="/billiards/many_no_friction/break_friction">Many particles &amp; no friction</a></li>
+  <li><a href="/billiards/attraction_no_friction/TODO">No friction &amp; attraction</a></li>
+</ul>
 
 
 </div>
@@ -76,13 +83,9 @@
 
 	<div class="navigationArea">
 		
-			<a href="/billiards/differences">»</a>
-		
 	</div>
 </div>
 <footer>
-	
-		<a href="/billiards/differences">Next <span class="chevron">»</span></a>
 	
 </footer>
 </body>

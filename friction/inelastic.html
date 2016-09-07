@@ -31,7 +31,11 @@
 		
 			<h1>Inelastic collisions</h1>
 		
-		<div class="page">
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<div class="page">
   <h2 id="inelastic-collisions">Inelastic collisions</h2>
 
   <div class="stepLog twoColumn">
@@ -46,7 +50,7 @@
             p.separationFactor = 1.1;
             p.maxParticleCount = 1000;
             p.dragStrength = 3;
-            p.boxWidth = 30;
+            setBoxWidth(simulation, 30);
 
             var layers = 5;
             var particleCount = 1 + (6 * layers * (layers + 1) / 2);
@@ -166,6 +170,15 @@
 </script>
 
 
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

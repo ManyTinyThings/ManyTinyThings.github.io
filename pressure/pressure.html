@@ -31,7 +31,11 @@
 		
 			<h1>Pressure</h1>
 		
-		<div class="page">
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<div class="page">
   <script>
     var wallDetectorSim = createSimulation({
         initialize: function(simulation) {
@@ -120,7 +124,7 @@
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0;
-            p.boxWidth = 100;
+            setBoxWidth(simulation, 100);
             p.maxParticleCount = 1000;
 
             updateBounds(simulation);
@@ -175,6 +179,15 @@ createTimeSeriesHere({
 <h2 id="hard-to-open-jar">Hard-to-open jar</h2>
 
 
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

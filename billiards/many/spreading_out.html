@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Tons of Particles –
+			Spreading Out –
 		
 		Many Tiny Things
 	</title>
@@ -31,46 +31,67 @@
 	
 	<div id="content">
 		
-			<h1>Tons of Particles</h1>
+			<h1>Spreading Out</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
-            p.boxWidth = 100;
+            setBoxWidth(simulation, 100);
 
-            initBilliards(simulation, 301);
+            // TODO: just a triangle, no need for billiards
+
+            initBilliards(simulation, simulation.boxBounds);
 
             setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Okay, let’s go with an amount that the simulation can handle.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>Okay, let’s go with an amount that the simulation can handle.</p>
+<p>Do a few shots.</p>
 
-      <p>Note how, when you smash the particles together, they keep bumping into each other.
-Every kick you give them results in a chain reaction.</p>
+<script>
+    var shotCount = 0;
+    var requiredShotCount = 3;
+    insertHere(createOutput(function() {
+        return `${shotCount} / ${requiredShotCount} shots`; 
+    }));
+    var impendingShot = false;
+    cue(function(){
+        if (sim.mouse.mode === MouseMode.impulse)
+        {
+            impendingShot = true;
+        }
 
-      <p>And every time you kick them, they spread out more.
-At first they’re neatly organised in a tidy triangle.
-But every time you kick ‘em they get less tidy and more messy.</p>
-
-    </div>
-
-    <div class="twoColumn">
-      <script>
-    insertHere(sim.div);
+        var didJustShoot = impendingShot && (sim.mouse.mode === MouseMode.none);
+        if (didJustShoot)
+        {
+            impendingShot = false;
+            shotCount += 1;
+        }
+        return (shotCount >= requiredShotCount);
+    });
+    endStep();
 </script>
 
-    </div>
-  </div>
-</div>
+<p>Notice how the particles get more and more spread out for each shot you make.</p>
 
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

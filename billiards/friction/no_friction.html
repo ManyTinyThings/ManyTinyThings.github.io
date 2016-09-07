@@ -25,7 +25,7 @@
 <div id="body">
 	<div class="navigationArea">
 		
-			<a href="/billiards/friction/friction">«</a>
+			<a href="/billiards/friction/frictionful_billiards">«</a>
 		
 	</div>
 	
@@ -33,68 +33,62 @@
 		
 			<h1>No Friction</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0;
 
-            initBilliards(simulation, 1);
+            initBilliards(simulation, simulation.boxBounds);
 
     		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>So, we have now tried playing billiards <strong>on ice</strong> and <strong>in mud</strong>. Kinda weird.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-      <p>So, we have now tried playing billiards <strong>on ice</strong> and <strong>in mud</strong>. <em>Weird</em>.</p>
+<p>But the tiny billiard balls that make up everything are <em>even weirder</em> than that.</p>
 
-      <p>But the tiny billiard balls that make up everything are <em>even weirder</em> than that.</p>
+<p><em>They have <strong>no friction</strong>.</em></p>
 
-      <p><em>They have <strong>no friction</strong>.</em></p>
+<p>What does that mean?</p>
 
-      <p>What does that mean?</p>
+<p>Give the ball a kick.</p>
 
-      <p>Give the ball a kick.</p>
-
-      <script>
+<script>
     cue(function() {
         return (getTotalEnergy(sim) > 0.1);
     });
     endStep();
 </script>
 
-      <p>Wait for it to stop.</p>
+<p>Wait for it to stop.</p>
 
-      <script>
-    var timer = 10;
-    cue(function(dt) {
-        timer -= dt;
-        return (timer < 0);
-    });
+<script>
+    cue(waitCue(10));
     endStep();
 </script>
 
-      <p>It never stops!</p>
+<p>It never stops!</p>
 
-      <p>Without friction slowing things down, <em>they never stop</em>.</p>
+<p>Without friction slowing things down, <em>they never stop</em>.</p>
 
-      <p><em>They keep going <strong>forever</strong>.</em></p>
+<p><em>They keep going <strong>forever</strong>.</em></p>
 
-    </div>
 
-    <div class="twoColumn">
-      <script>
+</div>
+<div class="twoColumn">
+<script>
 	insertHere(sim.div);
 </script>
-
-    </div>
-  </div>
 </div>
-
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

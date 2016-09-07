@@ -33,11 +33,15 @@
 		
 			<h1>Half box</h1>
 		
-		<script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
     var halfBoxSim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
-            p.boxWidth = 30;
+            setBoxWidth(simulation, 30);
 
             updateBounds(simulation);
             setWallsAlongBorder(simulation);
@@ -103,6 +107,15 @@
   </div>
 </div>
 
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

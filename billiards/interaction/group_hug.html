@@ -33,10 +33,14 @@
 		
 			<h1>Group Hug</h1>
 		
-		<script src="shared.js"></script>
+		<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script src="shared.js"></script>
 
 <script>
-    var interactionSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.1;
@@ -52,52 +56,49 @@
     });
 </script>
 
-<div id="chapter">
+<p>What if there are more than two particles?</p>
 
-  <div class="page">
+<p>Add more particles using the <strong>create</strong> tool.</p>
 
-    <div class="stepLog twoColumn">
+<p>(If you hold down the mouse button, you “paint” particles when moving the mouse.)</p>
 
-      <p>What if there are more than two particles?</p>
-
-      <p>Add more particles using the <strong>create</strong> tool.</p>
-
-      <script>
+<script>
+    var requiredCount = 20;
+    insertHere(createOutput(function() {
+        return `${sim.particles.length} / ${requiredCount} particles`;
+    }));
     cue(function () {
-        return (interactionSim.particles.length > 20);  
+        return (sim.particles.length >= requiredCount);  
     });
     endStep();
 </script>
 
-      <p>A group hug! How cute!</p>
+<p>A group hug! How cute!</p>
 
-      <p>The attraction between each pair of particles holds them together, and together they now make up a bigger object.</p>
+<p>The attraction between each pair of particles holds them together, and together they now make up a bigger object.</p>
 
-      <p>Try moving the object around with the <strong>move</strong> tool.</p>
+<p>Try moving the object around with the <strong>move</strong> tool.</p>
 
-      <script>
+<script>
     cue(function () {
-        return (ensembleSpeed(interactionSim.particles) > 1); 
+        return (ensembleSpeed(sim.particles) > 1); 
     });
     endStep();
 </script>
 
-      <p>The tiny, <em>microscopic</em> particles move together <strong>as one</strong>.</p>
+<p>The tiny, <strong>microscopic</strong> particles move together <em>as one</em>.</p>
 
-      <p><strong>One</strong> big, <em>macroscopic</em> thing.</p>
+<p><em>One</em> big, <strong>macroscopic</strong> thing.</p>
 
-    </div>
-
-    <div class="twoColumn">
-      <script>
-    insertHere(interactionSim.div);
-</script>
-
-    </div>
-  </div>
 
 </div>
-
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">

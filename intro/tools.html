@@ -34,17 +34,18 @@
 			<h1>Tools</h1>
 		
 		<div id="chapter">
-  <div class="page flex">
+<div class="page">
+<div class="stepLog twoColumn">
 
-    <script>
-    var introSim = createSimulation({
+<script>
+    var sim = createSimulation({
         initialize: function(simulation) {
 			var p = simulation.parameters;
 			p.friction = 0.1;
 			p.gravityAcceleration = 1;
 			p.dragStrength = 2;
-            //p.isOnlyHardSpheres = true;
-            //p.coefficientOfRestitution = 0.95;
+            p.isOnlyHardSpheres = true;
+            p.coefficientOfRestitution = 0.95;
 
 			var particle = new Particle();
 			v2.set(particle.position, 0, particle.radius - simulation.boxBounds.height / 2);
@@ -55,28 +56,25 @@
     });
 </script>
 
-    <div class="stepLog twoColumn">
+<p>In the <strong>bottom right corner</strong> of the simulation you can <strong>change tools</strong>.</p>
 
-      <p>In the <strong>bottom right corner</strong> of the simulation you can <strong>change tools</strong>.</p>
+<p>Having only one ball is a little dull, so let’s add more!</p>
 
-      <p>Having only one ball is a little dull, so let’s add more!</p>
+<p>Use the <strong>create</strong> tool to create more particles.</p>
 
-      <p>Use the <strong>create</strong> tool to create more particles.</p>
-
-      <script>
+<script>
 	cue(function()
 	{
-		return (introSim.particles.length > 5);
+		return (sim.particles.length > 5);
 	});
 	endStep();
 </script>
 
-      <p>Use the <strong>attract</strong> tool to lift all the balls off the ground.</p>
+<p>Use the <strong>attract</strong> tool to lift all the balls off the ground.</p>
 
-      <script>
+<script>
 	cue(function()
 	{
-		var sim = introSim;
 		var isAttractTool = (sim.mouse.mode == MouseMode.attract);
 		var minHeight = arrayMin(sim.particles, function(particle)
 		{ 
@@ -88,18 +86,17 @@
 	endStep();
 </script>
 
-      <p>The available tools will change from page to page, to suit the purpose of that page.</p>
-    </div>
+<p>The tools will change from page to page, to suit the purpose of that page.</p>
 
-    <div class="twoColumn">
-      <script>
-	insertHere(introSim.div);
-</script>
 
-    </div>
-  </div>
 </div>
-
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
 	</div>
 
 	<div class="navigationArea">
