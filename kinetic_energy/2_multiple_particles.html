@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			Multiple particle –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,53 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
+<script src="shared.js"></script>
 
 <script>
-    var billiardsSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
-            p.friction = 0.2;
+            p.friction = pageGlobal.friction;
 
             var particleCount = 7;
             for (var i = 0; i < particleCount; i++) {
             	var particle = new Particle();
+                particle.radius = pageGlobal.radius;
             	billiardsPosition(particle.position, i, 2 * particle.radius);
             	addParticle(simulation, particle);
             }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+            setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
+
 </script>
 
-<div id="chapter">
+<p>I added some more balls in a conspicuous pattern. You know what to do!</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
-
-      <p>Turn off the friction.</p>
-
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
+<script>
+	cue(function () {
+        var energy = getTotalEnergy(sim);
+        return (energy > 0.2);
     });
     endStep();
 </script>
 
-      <p>Take the shot.</p>
+<p>As the balls collide, they bounce off each other, transferring energy from one to the other.</p>
 
-      <script>
-	cue(isTriangleSplit(billiardsSim));
-	endStep();
+<p>Below is a graph of the total energy, which is the energy for all particles combined.</p>
+
+<script>
+	createTimeSeriesHere({
+		timeRange: pageGlobal.timeRange,
+        yMax: pageGlobal.energyPlotMax,
+		update: function() {
+			var energy = getTotalEnergy(sim);
+			return {time: sim.time, data: [energy]};
+		},
+	});
 </script>
 
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
-
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
-</script>
-
-    </div>
-  </div>
-</div>
+<p>Note how, even when the particles are bumping into each other, the curve looks the same as it did with just one particle.</p>
 
 
 </div>

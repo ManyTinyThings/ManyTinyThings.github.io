@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Spreading Out –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<div class="wrapper">
+	<header>
+	    <a class="siteTitle" href="/">Many Tiny Things</a>
+	</header>
+</div>
+<div id="body">
+	<div id="leftNavigationArea" class="navigationArea">
+	</div>
+	
+	<div id="content">
+		<nav id="navBar"></nav>
+<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
+    var sim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0.2;
+            p.isOnlyHardSpheres = true;
+            setBoxWidth(simulation, 120);
+
+            // var particleCount = 200;
+            // for (var i = 0; i < particleCount; i++) {
+            //     var particle = new Particle();
+            //     particle.position = randomDiscInRect(simulation.boxBounds, particle.radius);
+            //     addParticle(simulation, particle);
+            // }
+
+            setWallsAlongBorder(simulation);
+            var particleCount = 400;
+            var particles = [];
+            for (var i = 0; i < particleCount; i++) {
+                var particle = new Particle();
+                particle.position = randomPointInRect(simulation.boxBounds);
+                particles.push(particle);
+            }
+            addParticlesRandomlyAround(simulation, particles, v2(0, 0));
+
+            setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
+        }
+    });
+</script>
+
+<p>This isn’t <em>that</em> many particles, but it’s already quite hard to predict where any single particle will end up when you shoot.</p>
+
+<p>Use your pool cue a few times.</p>
+
+<script>
+    var shotCount = 0;
+    var requiredShotCount = 3;
+    insertHere(createOutput(function() {
+        return `${shotCount} / ${requiredShotCount} shots`; 
+    }));
+    var impendingShot = false;
+    cue(function(){
+        if (sim.mouse.mode === MouseMode.impulse)
+        {
+            impendingShot = true;
+        }
+
+        var didJustShoot = impendingShot && (sim.mouse.mode === MouseMode.none);
+        if (didJustShoot)
+        {
+            impendingShot = false;
+            shotCount += 1;
+        }
+        return (shotCount >= requiredShotCount);
+    });
+    endStep();
+</script>
+
+<p>Do you see the waves?</p>
+
+<p>When you shoot, you start a <em>chain reaction</em> of particles bumping into each other. A <em>wave</em> of motion spreading.</p>
+
+<p>This is a phenomenon that only appears when there are enough particles.</p>
+
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
+	</div>
+
+	<div id="rightNavigationArea" class="navigationArea">
+	</div>
+</div>
+<footer id="pageFooter">
+</footer>
+</body>
+</html>

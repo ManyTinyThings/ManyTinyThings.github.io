@@ -1,5 +1,555 @@
 "use strict";
 
+// ! URLs
+
+function parentUrl(url)
+{
+    var urlParts = removeTrailingSlash(url).split("/");
+    var result = urlParts.slice(0, urlParts.length - 1).join("/");
+    if (result.length === 0)
+    {
+        return "/";
+    }
+    return result;
+}
+
+function removeTrailingSlash(url)
+{
+    if(url.endsWith("/") && (url.length > 1))
+    {
+        return url.slice(0, url.length - 1);
+    }
+    return url;
+}
+
+// ! Site navigation
+
+var NavigationInfo = new function ()
+{
+    // TODO: do this statically instead!
+
+    var allPages = [
+        
+        {
+            url: "/billiards/4_combinations/many_attraction/1_group_hug",
+            title: "Group Hug",
+            sequenceTitle: "Many & Attracting",
+        },
+        
+        {
+            url: "/billiards/1_impulse",
+            title: "Impulse",
+            sequenceTitle: "Billiards",
+        },
+        
+        {
+            url: "/intro/1_interaction",
+            title: "Interacting",
+            sequenceTitle: "Introduction",
+        },
+        
+        {
+            url: "/billiards/3_differences/attraction/1_love",
+            title: "Particles in Love",
+            sequenceTitle: "Attraction",
+        },
+        
+        {
+            url: "/phenomena/1_overview",
+            title: "Phenomena",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/many/1_predict",
+            title: "Follow",
+            sequenceTitle: "Many particles",
+        },
+        
+        {
+            url: "/kinetic_energy/1_single_particle",
+            title: "Single particle",
+            sequenceTitle: "Movement Energy",
+        },
+        
+        {
+            url: "/billiards/4_combinations/many_no_friction/1_spread_friction",
+            title: "Breaking with friction",
+            sequenceTitle: "Many that never stop",
+        },
+        
+        {
+            url: "/billiards/3_differences/friction/1_stopping",
+            title: "Stopping",
+            sequenceTitle: "Never stop",
+        },
+        
+        {
+            url: "/billiards/4_combinations/attraction_no_friction/1_vibration",
+            title: "Snap vibration",
+            sequenceTitle: "Attraction & No Friction",
+        },
+        
+        {
+            url: "/billiards/2_break_shot",
+            title: "Break Shot",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/friction/2_friction",
+            title: "Friction",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/attraction/2_high_speed",
+            title: "High Speed Lovin'",
+            
+        },
+        
+        {
+            url: "/kinetic_energy/2_multiple_particles",
+            title: "Multiple particle",
+            
+        },
+        
+        {
+            url: "/billiards/4_combinations/many_no_friction/2_spread_variable_friction",
+            title: "The Return of Ice/Mud Billiards",
+            
+        },
+        
+        {
+            url: "/billiards/4_combinations/many_attraction/2_sticky_billiards",
+            title: "Sticky Billiards",
+            
+        },
+        
+        {
+            url: "/intro/2_tools",
+            title: "Tool",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/many/2_variable_count",
+            title: "Even More Particles",
+            
+        },
+        
+        {
+            url: "/billiards/4_combinations/attraction_no_friction/2_vibration_friction",
+            title: "Vibration & Friction",
+            
+        },
+        
+        {
+            url: "/kinetic_energy/3_adding_energy",
+            title: "Adding Movement Energy",
+            
+        },
+        
+        {
+            url: "/billiards/4_combinations/many_no_friction/3_break_no_friction",
+            title: "Careful Breakage",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/friction/3_frictionful_billiards",
+            title: "Frictionful Billiards",
+            
+        },
+        
+        {
+            url: "/intro/3_graphs",
+            title: "Graph",
+            
+        },
+        
+        {
+            url: "/billiards/4_combinations/attraction_no_friction/3_low_speed",
+            title: "Low Speed Bouncin'",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/many/3_spreading_out",
+            title: "Spreading Out",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/attraction/3_triangle_drama",
+            title: "High Speed Lovin'",
+            
+        },
+        
+        {
+            url: "/billiards/4_combinations/many_no_friction/4_fast_slow",
+            title: "Fast and slow",
+            
+        },
+        
+        {
+            url: "/billiards/4_combinations/attraction_no_friction/4_forever_bouncing",
+            title: "Forever on the Move",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/friction/4_no_friction",
+            title: "No Friction",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/many/4_not_enough",
+            title: "Still Not Enough",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/friction/5_frictionless_billiards",
+            title: "Frictionless Billiards",
+            
+        },
+        
+        {
+            url: "/billiards/5_together",
+            title: "Group Hug",
+            sequenceTitle: "Many Attracting that Never Stop",
+        },
+        
+        {
+            url: "/billiards/6_temperature_slider",
+            title: "Frictionless Hugs for Everyone!",
+            
+        },
+        
+        {
+            url: "/billiards/7_billiards",
+            title: "Billiards",
+            
+        },
+        
+        {
+            url: "/states/attractive_potential",
+            title: "Attractive potentia",
+            
+        },
+        
+        {
+            url: "/entropy/billiards",
+            title: "Messines",
+            
+        },
+        
+        {
+            url: "/entropy/entropy",
+            title: "Entropy",
+            
+        },
+        
+        {
+            url: "/states/evaporation",
+            title: "Evaporation",
+            
+        },
+        
+        {
+            url: "/friction/friction",
+            title: "Friction",
+            
+        },
+        
+        {
+            url: "/entropy/frictionless_billiards",
+            title: "Frictionless Messines",
+            
+        },
+        
+        {
+            url: "/assets/scripts/functions.js",
+            title: "",
+            
+        },
+        
+        {
+            url: "/entropy/half_box",
+            title: "Half bo",
+            
+        },
+        
+        {
+            url: "/heat/heat",
+            title: "Heat",
+            
+        },
+        
+        {
+            url: "/heat/heat_transfer",
+            title: "Heat transfer",
+            
+        },
+        
+        {
+            url: "/",
+            title: "",
+            
+        },
+        
+        {
+            url: "/billiards/4_combinations/",
+            title: "Microscopic Differences",
+            
+        },
+        
+        {
+            url: "/billiards/3_differences/",
+            title: "Microscopic Differences",
+            
+        },
+        
+        {
+            url: "/friction/inelastic",
+            title: "Inelastic collisions",
+            
+        },
+        
+        {
+            url: "/energy/key",
+            title: "Key",
+            
+        },
+        
+        {
+            url: "/pressure/pressure",
+            title: "Pressure",
+            
+        },
+        
+        {
+            url: "/states/repulsive_potential",
+            title: "Repulsive potentia",
+            
+        },
+        
+        {
+            url: "/states/solid_liquid_gas",
+            title: "Group Hu",
+            
+        },
+        
+        {
+            url: "/assets/style.css",
+            title: "",
+            
+        },
+        
+    ];
+
+    var Sequence = function()
+    {
+        this.title = "";
+        this.baseUrl = null;
+        this.panelUrls = [];
+    }
+
+    this.sequences = {};
+    allPages.sort(function(a, b)
+    {
+        return (a.url > b.url) - (a.url < b.url);
+    });
+    for (var page of allPages) {
+        var baseUrl = parentUrl(page.url)
+        var sequence = this.sequences[baseUrl];
+        if (sequence === undefined) {
+            sequence = new Sequence();
+            sequence.baseUrl = baseUrl;
+            if (page.sequenceTitle)
+            {
+                sequence.title = page.sequenceTitle;
+            }
+            this.sequences[baseUrl] = sequence;
+        }
+        sequence.panelUrls.push(removeTrailingSlash(page.url));
+    }
+
+    var currentUrl = removeTrailingSlash(window.location.pathname);
+    var currentBaseUrl = parentUrl(currentUrl);
+    var currentSequence = this.sequences[currentBaseUrl];
+    var panelIndex = currentSequence.panelUrls.indexOf(currentUrl);
+    if (panelIndex < 0)
+    {
+        throw "Something wrong with urls."
+    }
+    this.currentPosition = {
+        sequence: currentSequence,
+        panelIndex: panelIndex,
+    };
+}();
+
+function createSequenceDots(sequence)
+{
+    var div = createElement("div");
+    div.classList.add("sequenceDots");
+
+    if (sequence.panelUrls.length <= 1)
+    {
+        return div;
+    }
+
+    var current = NavigationInfo.currentPosition;
+
+    for (var panelIndex = 0; panelIndex < sequence.panelUrls.length; panelIndex++) {
+        var a = createAndAppend("a", div);
+        var sequenceProgress = localStorage[sequence.baseUrl];
+        if (sequenceProgress)
+        {
+            a.innerHTML = sequenceProgress[panelIndex];    
+        }
+        else
+        {
+            a.innerHTML = "○";
+        }
+        if ((sequence === current.sequence) && (panelIndex === current.panelIndex))
+        {
+            a.classList.add("current");
+        }
+        if (a.innerHTML !== "○")
+        {
+            a.href = sequence.panelUrls[panelIndex];
+            a.classList.add("visited");
+        }
+    }
+
+    return div;
+}
+
+function resetProgress()
+{
+    localStorage.clear();
+}
+
+function makeParentElementSequenceLink(sequenceUrl)
+{
+    var sequence = NavigationInfo.sequences[sequenceUrl];
+    var parentElement = document.currentScript.parentNode;
+    parentElement.classList.add("sequenceLink");
+
+    var a = createElement("a");
+    while (parentElement.childNodes.length > 0)
+    {
+        a.appendChild(parentElement.firstChild);
+    }
+    parentElement.appendChild(a);
+    a.href = sequence.panelUrls[0];
+
+    var sequenceDots = createSequenceDots(sequence);
+    parentElement.appendChild(sequenceDots);
+
+    return sequence;
+}
+
+function isSequenceCompleted(sequenceUrl)
+{
+    var sequenceProgress = localStorage[sequenceUrl];
+    for (var i = 0; i < sequenceProgress.length; i++) {
+        var char = sequenceProgress[i];
+        if (char !== "●")
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+function thumbnailSim(simulation)
+{
+    simulation.parameters.isPausedWithoutMouse = true;
+    setElementIsVisible(simulation.controlsDiv, false);
+}
+
+function replaceAt(string, index, replacementString)
+{
+    return string.substr(0, index) + replacementString + string.substr(index + replacementString.length);
+}
+
+// Record this panel as visited
+(function() {
+    var current = NavigationInfo.currentPosition;
+    var sequenceProgress = localStorage[current.sequence.baseUrl];
+    if (!sequenceProgress || (sequenceProgress.length != current.sequence.panelUrls.length))
+    {
+        sequenceProgress = "○".repeat(current.sequence.panelUrls.length);      
+    }
+    localStorage[current.sequence.baseUrl] = replaceAt(sequenceProgress, current.panelIndex, "●");
+}());
+
+
+// Add navigation links to page
+
+document.addEventListener("DOMContentLoaded", function() {
+    var current = NavigationInfo.currentPosition;
+
+    if (current.sequence.baseUrl == "/")
+    {
+        return;
+    }
+
+    var isFirstPanel = (current.panelIndex === 0);
+    var isLastPanel = (current.panelIndex === (current.sequence.panelUrls.length - 1));
+    var prevUrl;
+    if (isFirstPanel)
+    {
+        prevUrl = parentUrl(current.sequence.baseUrl);
+    }
+    else
+    {
+        prevUrl = current.sequence.panelUrls[current.panelIndex - 1];
+    }
+    document.getElementById("leftNavigationArea").innerHTML = `<a href=${prevUrl}>«</a>`;
+
+    var nextUrl;
+    if (isLastPanel)
+    {
+        nextUrl = parentUrl(current.sequence.baseUrl);
+    }
+    else
+    {
+        nextUrl = current.sequence.panelUrls[current.panelIndex + 1];
+    }
+
+    document.getElementById("rightNavigationArea").innerHTML = `<a href=${nextUrl}>»</a>`;
+    document.getElementById("pageFooter").innerHTML = `<a href=${nextUrl}>Next <span class="chevron">»</span></a>`;
+
+    // nav bar
+
+    var navBar = document.getElementById("navBar");
+
+    if (navBar)
+    {
+        var title = current.sequence.title;
+        var url = parentUrl(current.sequence.baseUrl);
+        while (url !== "/")
+        {
+            var sequence = NavigationInfo.sequences[url];
+            if (sequence)
+            {
+                title = `<a href="${parentUrl(current.sequence.baseUrl)}">${sequence.title}</a> ⟩ ${title}`; 
+            }
+            url = parentUrl(url);
+        }
+
+        var sequenceTitle = createAndAppend("h1", navBar);
+        sequenceTitle.innerHTML = title;
+        var sequenceDots = createSequenceDots(current.sequence);
+        navBar.appendChild(sequenceDots);
+    }
+});
+
 // ! Dependency graph
 
 function Chapter(name)
@@ -297,6 +847,10 @@ function copyObject(destination, source)
 
 function arrayRemoveElementAt(array, index)
 {
+    if (index < 0)
+    {
+        index = array.length + index;
+    }
     array.splice(index, 1);
 }
 
@@ -429,6 +983,11 @@ function identity(x)
     return x;
 }
 
+function dontBreak(string)
+{
+    return string.replace(" ", "&nbsp;");
+}
+
 function createSlider(opts)
 {
     combineWithDefaults(opts,
@@ -441,7 +1000,7 @@ function createSlider(opts)
         isExternallyChangeable: false,
     });
 
-    var initialSliderValue = opts.inverseTransform(opts.object[opts.name]);
+    var initialSliderValue = opts.inverseTransform(opts.initialValue);
     var sliderMin = opts.inverseTransform(opts.min);
     var sliderMax = opts.inverseTransform(opts.max);
     var step = opts.step || (sliderMax - sliderMin) / 1000;
@@ -449,9 +1008,10 @@ function createSlider(opts)
     // set up elements
 
     var p = createElement("p");
-    p.appendChild(document.createTextNode(opts.minLabel));
+    p.classList.add("slider");
+    createAndAppend("div", p).innerHTML = dontBreak(opts.minLabel);
     var slider = createAndAppend("input", p);
-    p.appendChild(document.createTextNode(opts.maxLabel));
+    createAndAppend("div", p).innerHTML = dontBreak(opts.maxLabel);
 
     // configure slider
 
@@ -463,37 +1023,19 @@ function createSlider(opts)
 
     // set up callbacks
 
-    slider.addEventListener("input", function()
-    {
-        opts.object[opts.name] = opts.transform(Number(slider.value));
-    });
-
     if (opts.isSnapBack)
     {
         slider.addEventListener("change", function()
         {
             slider.value = initialSliderValue;
-            opts.object[opts.name] = opts.transform(Number(initialSliderValue));
+            opts.update(opts.transform(initialSliderValue));
         });
     }
 
-    var updater;
-
-    if (opts.isExternallyChangeable)
+    var updater = function()
     {
-        updater = function()
-        {
-            slider.value = opts.inverseTransform(opts.object[opts.name]);
-            window.requestAnimationFrame(updater);
-        }
-    }
-    else
-    {
-        updater = function()
-        {
-            opts.object[opts.name] = opts.transform(Number(slider.value));
-            window.requestAnimationFrame(updater);
-        }
+        opts.update(opts.transform(Number(slider.value)));
+        window.requestAnimationFrame(updater);
     }
 
     updater();
@@ -532,7 +1074,19 @@ function createButton(opts)
     var button = createAndAppend("input", div);
     button.setAttribute("type", "button");
     button.setAttribute("value", opts.label);
-    button.addEventListener("click", opts.action);
+    if (opts.action)
+    {
+        button.addEventListener("click", opts.action);    
+    }
+    else if(opts.mouseDown && opts.mouseUp)
+    {
+        button.addEventListener("mousedown", opts.mouseDown);
+        button.addEventListener("mouseup", opts.mouseUp);
+    }
+    else
+    {
+        throw "Specify either an action callback or mouseUp, mouseDown callbacks."
+    }
     return div;
 }
 
@@ -975,6 +1529,24 @@ function minimumEnergyCue(simulation, minEnergy) {
     var cueFunction = function()
     {
         return (getTotalEnergy(simulation) > minEnergy);
+    }
+    return cueFunction;
+}
+
+function releaseCue(simulation) {
+    var wasUsingTool = false;
+    var cueFunction = function() 
+    {
+        var isUsingTool = (simulation.mouse.mode !== MouseMode.none);
+        var didJustRelease = wasUsingTool && (!isUsingTool);
+        if (didJustRelease)
+        {
+            return true;
+        }
+        
+        wasUsingTool = isUsingTool;
+
+        return false;
     }
     return cueFunction;
 }
@@ -1600,6 +2172,16 @@ function getTotalPressure(simulation)
     return pressure;
 }
 
+function getTotalTemperature(simulation)
+{
+    var totalKineticEnergy = 0;
+    for (var particleIndex = 0; particleIndex < simulation.particles.length; particleIndex++) {
+        var particle = simulation.particles[particleIndex];
+        totalKineticEnergy += particle.kineticEnergy;
+    }
+    return (totalKineticEnergy / simulation.particles.length);
+}
+
 // ! Regions
 
 function Region()
@@ -1982,7 +2564,7 @@ function latticeParticleGenerator(simulation, particleIndex)
     return particle;
 }
 
-function addParticlesRandomly(simulation, newParticles)
+function addParticlesRandomlyAround(simulation, newParticles, startingPoint)
 {
     var maxTryCount = 10;
     var candidates = [];
@@ -1991,11 +2573,7 @@ function addParticlesRandomly(simulation, newParticles)
     if (simulation.particles.length == 0)
     {
         var newParticle = newParticles[0];
-        var r = newParticle.radius;
-        var b = simulation.boxBounds;
-        var x = randomInInterval(b.left + r, b.right - r);
-        var y = randomInInterval(b.bottom + r, b.top - r);
-        v2.set(newParticle.position, x, y);
+        v2.copy(newParticle.position, startingPoint);
         addParticle(simulation, newParticle);
         candidates.push(newParticle);
         startingNewParticleIndex = 1;
@@ -2007,6 +2585,8 @@ function addParticlesRandomly(simulation, newParticles)
             candidates.push(simulation.particles[particleIndex]);
         }
     }
+    var wallStart = v2.alloc();
+    var wallVector = v2.alloc();
 
     for (var newParticleIndex = startingNewParticleIndex; newParticleIndex < newParticles.length; newParticleIndex++)
     {
@@ -2038,7 +2618,22 @@ function addParticlesRandomly(simulation, newParticles)
                 var deltaPosition = randomUnitVector();
                 v2.scale(deltaPosition, deltaPosition, randomRadius);
                 v2.add(newParticle.position, candidate.position, deltaPosition);
-                if (!isColliding(simulation, newParticle))
+
+                var isAcrossWall = false;
+                for (var wallIndex = 0; wallIndex < simulation.walls.length; wallIndex++) {
+                    var wall = simulation.walls[wallIndex];
+                    v2.subtract(wallStart, wall.vertices[0], candidate.position);
+                    v2.subtract(wallVector, wall.vertices[1], wall.vertices[0]);
+                    var intersection = intersectionOriginLineLine(deltaPosition, wallStart, wallVector);
+                    var isIntersecting = isBetween(0, intersection.tOriginLine, 1) && isBetween(0, intersection.tLine, 1);
+                    if (isIntersecting)
+                    {
+                        isAcrossWall = true;
+                        break;
+                    }
+                }
+                var isValid = !(isAcrossWall || isColliding(simulation, newParticle));
+                if (isValid)
                 {
                     isSearching = false;
                 }
@@ -2050,6 +2645,9 @@ function addParticlesRandomly(simulation, newParticles)
             candidates.push(newParticle);
         };
     }
+
+    v2.free(wallStart);
+    v2.free(wallVector);
 }
 
 // ! Billiards
@@ -2123,6 +2721,54 @@ function isBilliardsTriangleSplit(simulation)
     }
     
     return cueFunction;
+}
+
+// ! Friction
+
+function createIceMudSliderHere()
+{
+    createSliderHere({
+        initialValue: sim.parameters.friction,
+        min: 0.04, max: 5,
+        minLabel: "Ice", maxLabel: "Mud",
+        transform: function(x) { return Math.exp(x); },
+        inverseTransform: function(x) { return Math.log(x); },
+        update: function(value)
+        {
+            sim.parameters.friction = value;
+        }
+    }); 
+}
+
+
+
+
+// ! Particle setup
+
+var addOppositeParticles = function(simulation, d)
+{
+    d = d || simulation.boxBounds.width / 4;
+    var particleSW = new Particle();
+    v2.set(particleSW.position, -d, -d);
+    addParticle(simulation, particleSW);
+
+    var particleNE = new Particle();
+    v2.set(particleNE.position, d, d);
+    addParticle(simulation, particleNE);
+}
+
+
+function ensembleSpeed(particles)
+{
+    var totalVelocity = v2.alloc();
+    v2.set(totalVelocity, 0, 0);
+    for (var particleIndex = 0; particleIndex < particles.length; particleIndex++) {
+        var particle = particles[particleIndex];
+        v2.add(totalVelocity, totalVelocity, particle.velocity);
+    }
+    var ensembleSpeed = v2.magnitude(totalVelocity) / particles.length;
+    v2.free(totalVelocity);
+    return ensembleSpeed;
 }
 
 // ! Particle types
@@ -2285,7 +2931,6 @@ function isColliding(simulation, particle)
 
     if (simulation.walls)
     {
-
         var particleFromWall = v2.alloc();
 
         for (var wallIndex = 0; wallIndex < simulation.walls.length; wallIndex++) {
@@ -2304,77 +2949,6 @@ function isColliding(simulation, particle)
         v2.free(particleFromWall);
     }
     return isCollidingWithWall;
-}
-
-function moveOutOfCollision(simulation, particle)
-{
-    var relativePosition = v2.alloc();
-    var wallVector = v2.alloc();
-
-    var hasCollisions = true;
-    while (hasCollisions)
-    {
-        hasCollisions = false;
-        if (simulation.walls)
-        {
-            for (var wallIndex = 0; wallIndex < simulation.walls.length; wallIndex++)
-            {
-                var wall = simulation.walls[wallIndex];
-
-                shortestVectorFromLine(relativePosition, particle.position, wall.vertices[1], wall.vertices[0]);
-
-                var squaredDistance = v2.square(relativePosition);
-                if (squaredDistance < square(particle.radius))
-                {
-                    var distance = Math.sqrt(squaredDistance);
-                    var overlapRatio = (particle.radius - distance) / distance;
-                    v2.scaleAndAdd(particle.position,
-                        particle.position, relativePosition, overlapRatio);
-                    hasCollisions = true;
-                    break;
-                }
-            }
-            if (hasCollisions)
-            {
-                continue;
-            }
-        }
-
-        // for (var otherParticleIndex = 0; otherParticleIndex < simulation.particles.length; otherParticleIndex++)
-        // {
-        //     var otherParticle = simulation.particles[otherParticleIndex];
-        //     if (otherParticle === particle)
-        //     {
-        //         continue;
-        //     }
-
-        //     var distanceLimit = particle.radius + otherParticle.radius;
-        //     v2.subtract(relativePosition, otherParticle.position, particle.position);
-        //     var squaredDistance = v2.square(relativePosition);
-
-        //     if (squaredDistance < square(distanceLimit))
-        //     {
-        //         var distance = Math.sqrt(squaredDistance);
-        //         var overlapRatio = (distanceLimit - distance) / distance;
-
-        //         // NOTE: move particles according to their relative size, 
-        //         // otherwise very big particles might have problems
-        //         // v2.scaleAndAdd(particle.position,
-        //         //     particle.position, relativePosition, -overlapRatio * otherParticle.radius / distanceLimit);
-        //         // v2.scaleAndAdd(otherParticle.position,
-        //         //     otherParticle.position, relativePosition, overlapRatio * particle.radius / distanceLimit);
-
-        //         v2.scaleAndAdd(particle.position,
-        //             particle.position, relativePosition, -overlapRatio);
-
-        //         hasCollisions = true;
-        //         break;
-        //     }
-        // }
-    }
-
-    v2.free(relativePosition);
-    v2.free(wallVector);
 }
 
 function removeParticle(simulation, particleIndex)
@@ -2492,9 +3066,114 @@ function createSimulation(opts)
 
     selectTool(simulation.toolbar, "move");
 
+    // ! Event listeners
+
+    document.addEventListener("keydown", function(event)
+    {
+        var downKey = String.fromCharCode(event.keyCode).toLowerCase();
+        simulation.downKeys.push(downKey);
+    });
+
+    document.addEventListener("keyup", function(event)
+    {
+        var releasedKey = String.fromCharCode(event.keyCode).toLowerCase();
+        simulation.downKeys = simulation.downKeys.filter(function(key)
+        {
+            return key != releasedKey;
+        });
+    });
+
+    function updateMouseButton(button, isDown)
+    {
+        button.transitionCount += button.down ^ isDown;
+        button.down = isDown;
+    }
+    
+    function updateMouseButtonsFromEvent(event, isDown)
+    {
+        if (simulation.mouse.isActive)
+        {
+            if (event.button == 0) {
+                updateMouseButton(simulation.mouse.leftButton, isDown);
+            }
+            if (event.button == 2) {
+                updateMouseButton(simulation.mouse.rightButton, isDown);
+            }
+        }
+    }
+
+    function updateMousePositionFromEvent(event)
+    {
+        simulation.mouse.worldPosition = worldFromPage(simulation.renderer, v2(event.clientX, event.clientY));
+        if (simulation.mouse.isActive)
+        {
+            event.preventDefault();
+        }
+    }
+
+    // NOTE: only listen to mouse events that start on this canvas
+    simulation.canvas.addEventListener("mousedown", function(event)
+    {
+        simulation.mouse.isActive = true;
+        updateMouseButtonsFromEvent(event, true);
+        updateMousePositionFromEvent(event);
+    });
+    document.addEventListener("mouseup", function(event)
+    {
+        updateMouseButtonsFromEvent(event, false);
+        updateMousePositionFromEvent(event);
+        simulation.mouse.isActive = false;
+    });
+    document.addEventListener("mousemove", updateMousePositionFromEvent);
+
+
+    // ! Pause when simulation is not visible
+
+    function pauseIfHidden(event)
+    {
+        // TODO: maybe just keep one playing at a time, the one we are scrolling towards
+        var divBounds = simulation.div.getBoundingClientRect();
+
+        var isAboveViewport = divBounds.bottom < 0;
+        var isBelowViewport = divBounds.top > window.innerHeight;
+
+        var isAutoPaused = document.hidden || isAboveViewport || isBelowViewport;
+
+        if (isAutoPaused)
+        {
+            if (simulation.requestFrameId)
+            {
+                window.cancelAnimationFrame(simulation.requestFrameId);
+                simulation.requestFrameId = null;
+            }
+        }
+        else
+        {
+            if (simulation.requestFrameId === null)
+            {
+                simulation.isFirstFrameAfterPause = true;
+                simulation.requestFrameId = window.requestAnimationFrame(simulation.updateFunction);
+            }
+        }
+    }
+
+    document.addEventListener('visibilitychange', pauseIfHidden);
+    document.addEventListener("scroll", pauseIfHidden);
+    document.addEventListener("resize", pauseIfHidden);
+    window.addEventListener("load", pauseIfHidden);
+
     simulation.renderer = createRenderer(simulation.canvas);
 
     resetSimulation(simulation);
+
+    // ! Start simulation
+
+    simulation.updateFunction = function(timestamp)
+    {
+        updateSimulation(simulation.updateFunction, simulation, timestamp);
+    };
+
+    simulation.requestFrameId = window.requestAnimationFrame(simulation.updateFunction);
 
     return simulation;
 }
@@ -2517,6 +3196,7 @@ function resetSimulation(simulation)
     p.soundEnabled = false;
     p.maxParticleCount = 0;
     p.shouldRemindOnEscape = true;
+    p.isPausedWithoutMouse = false;
 
     // box
     p.isPeriodic = false;
@@ -2546,6 +3226,7 @@ function resetSimulation(simulation)
     p.cutoffFactor = 2.5;
     p.wallStrength = 1;
 
+
     // user forces
     p.dragStrength = 1;
     p.repelStrength = 1;
@@ -2553,8 +3234,9 @@ function resetSimulation(simulation)
     p.impulseStrength = 1;
 
     // thermostat
-    p.thermostatSpeed = 0;
-    p.thermostatTemperature = 0.01;
+    p.thermostatRandomStrength = 0;
+    p.thermostatDeterministicStrength = 0;
+    p.thermostatTemperature = 1;
 
     // reset stuff
     var s = simulation;
@@ -2615,26 +3297,13 @@ function resetSimulation(simulation)
 
     simulation.downKeys = [];
 
-    document.addEventListener("keydown", function(event)
-    {
-        var downKey = String.fromCharCode(event.keyCode).toLowerCase();
-        simulation.downKeys.push(downKey);
-    });
-
-    document.addEventListener("keyup", function(event)
-    {
-        var releasedKey = String.fromCharCode(event.keyCode).toLowerCase();
-        simulation.downKeys = simulation.downKeys.filter(function(key)
-        {
-            return key != releasedKey;
-        });
-    });
+    
 
     // ! Mouse
 
     simulation.mouse = {
-        active: false,
-        worldPosition: v2(0, 0),
+        isActive: false,
+        worldPosition: v2(1e5, 1e5),
         leftButton:
         {
             down: false,
@@ -2657,94 +3326,6 @@ function resetSimulation(simulation)
             length: 0.8,
         }
     }
-
-    function updateMouseButton(button, isDown)
-    {
-	    button.transitionCount += button.down ^ isDown;
-		button.down = isDown;
-    }
-	
-	function updateMouseButtonsFromEvent(event, isDown)
-	{
-		if (simulation.mouse.active)
-		{
-			if (event.button == 0) {
-				updateMouseButton(simulation.mouse.leftButton, isDown);
-			}
-			if (event.button == 2) {
-				updateMouseButton(simulation.mouse.rightButton, isDown);
-			}
-		}
-	}
-
-    function updateMousePositionFromEvent(event)
-    {
-        if (simulation.mouse.active)
-        {
-            simulation.mouse.worldPosition = worldFromPage(simulation.renderer, v2(event.clientX, event.clientY));
-            event.preventDefault();
-        }
-    }
-
-    // NOTE: only listen to mouse events that start on this canvas
-    simulation.canvas.addEventListener("mousedown", function(event)
-    {
-        simulation.mouse.active = true;
-        updateMouseButtonsFromEvent(event, true);
-        updateMousePositionFromEvent(event);
-    });
-    document.addEventListener("mouseup", function(event)
-    {
-		updateMouseButtonsFromEvent(event, false);
-        updateMousePositionFromEvent(event);
-        simulation.mouse.active = false;
-    });
-    document.addEventListener("mousemove", updateMousePositionFromEvent);
-
-    // ! Pause when simulation is not visible
-
-    function pauseIfHidden(event)
-    {
-        // TODO: maybe just keep one playing at a time, the one we are scrolling towards
-        var divBounds = simulation.div.getBoundingClientRect();
-
-        var isAboveViewport = divBounds.bottom < 0;
-        var isBelowViewport = divBounds.top > window.innerHeight;
-
-        var isAutoPaused = document.hidden || isAboveViewport || isBelowViewport;
-
-        if (isAutoPaused)
-        {
-            if (simulation.requestFrameId)
-            {
-                window.cancelAnimationFrame(simulation.requestFrameId);
-                simulation.requestFrameId = null;
-            }
-        }
-        else
-        {
-            if (simulation.requestFrameId === null)
-            {
-                simulation.isFirstFrameAfterPause = true;
-                simulation.requestFrameId = window.requestAnimationFrame(simulation.updateFunction);
-            }
-        }
-    }
-
-    document.addEventListener('visibilitychange', pauseIfHidden);
-    document.addEventListener("scroll", pauseIfHidden);
-    document.addEventListener("resize", pauseIfHidden);
-    window.addEventListener("load", pauseIfHidden);
-
-
-    // ! Start simulation
-
-    simulation.updateFunction = function(timestamp)
-    {
-        updateSimulation(simulation.updateFunction, simulation, timestamp);
-    };
-
-    simulation.requestFrameId = window.requestAnimationFrame(simulation.updateFunction);
 
     return simulation;
 }
@@ -2850,37 +3431,28 @@ var updateSimulation = function()
     return function(updateFunction, simulation, timestamp)
     {
 
+        var doImpulseNow = false;
+
         // ! Process input
 
         // TODO: handle periodic boundary conditions in mouse input
 
         if (simulation.mouse.leftButton.transitionCount > 0)
         {
-            if (simulation.mouse.mode == MouseMode.impulse)
-            {
-                var particle = simulation.mouse.activeParticle;
-                if (particle)
-                {
-                    var strength = simulation.parameters.impulseStrength;
-                    v2.subtract(relativePosition, simulation.mouse.worldPosition, particle.position);
-                    v2.scaleAndAdd(particle.velocity, 
-                        particle.velocity, relativePosition, strength);
-                }
-            }
-
+            var doImpulseNow = (simulation.mouse.mode == MouseMode.impulse);
             simulation.mouse.mode = MouseMode.none;
-            simulation.mouse.activeParticle = null;
         }
 
         if (simulation.mouse.leftButton.down)
         {
             var closestParticleIndex = findClosestParticle(simulation, simulation.mouse.worldPosition);
             var closestParticleExists = (closestParticleIndex >= 0);
+            
+            var maxDistance = 5 / simulation.pixelWidth * simulation.boxBounds.width;
 
             if (closestParticleExists)
             {
                 var closestParticle = simulation.particles[closestParticleIndex];
-                var maxDistance = 5 / simulation.pixelWidth * simulation.boxBounds.width;
                 var distanceToCenter = v2.distance(closestParticle.position, simulation.mouse.worldPosition);
                 var distanceToRim = distanceToCenter - closestParticle.radius;
                 closestParticleExists = (distanceToRim < maxDistance);
@@ -2942,8 +3514,10 @@ var updateSimulation = function()
                 }
             }
         }
-
-        if (!simulation.pausedByUser)
+        var isMouseInside = doesRectContainPoint(simulation.boxBounds, simulation.mouse.worldPosition);
+        var isMouseActive = simulation.mouse.isActive || (isMouseInside && (!simulation.mouse.leftButton.down));
+        var isPaused = simulation.pausedByUser || (simulation.parameters.isPausedWithoutMouse && (!isMouseActive));
+        if (!isPaused)
         {
 
 
@@ -2982,19 +3556,23 @@ var updateSimulation = function()
                 // ! Equations of motion
                 var particles = simulation.particles;
 
+                var temperature = atLeast(0.00001, getTotalTemperature(simulation));
+                var relativeTemperatureDifference = (params.thermostatTemperature - temperature) / temperature;
+                var thermostatScaling = Math.sqrt(1 + params.thermostatDeterministicStrength * dt * relativeTemperatureDifference);
+
                 // langevin setup
 
-                applyLangevinNoise(particles, params.thermostatSpeed, params.thermostatTemperature, dt);
+                applyLangevinNoise(particles, params.thermostatRandomStrength, params.thermostatTemperature, dt);
 
                 for (var particleIndex = 0; particleIndex < particles.length;
                     ++particleIndex)
                 {
                     var particle = particles[particleIndex];
 
-                    // Scale velocities with delta temperature
-
-                    v2.scale(particle.velocity, particle.velocity,
-                        Math.pow(params.velocityAmplification, dt));
+                    // Scale velocities with thermostat
+                    
+                    v2.scale(particle.velocity, particle.velocity, thermostatScaling);
+                    
 
                     // velocity verlet
                     v2.scaleAndAdd(particle.velocity, particle.velocity, particle.acceleration, 0.5 * dt);
@@ -3425,63 +4003,62 @@ var updateSimulation = function()
 
                 var mouseToParticle = v2.alloc();
 
-                // ! Attract tool
 
-                if (simulation.mouse.mode === MouseMode.attract)
-                {
-                    for (var particleIndex = 0; particleIndex < simulation.particles.length; particleIndex++) {
-                        var particle = simulation.particles[particleIndex];
+                var attractToolEnabled = (simulation.mouse.mode === MouseMode.attract);
+                var attractFactor = - attractToolEnabled * params.attractStrength * simulation.boxBounds.width / 20;
 
-                        v2.subtract(mouseToParticle, particle.position, simulation.mouse.worldPosition);
+                var repelToolEnabled = (simulation.mouse.mode === MouseMode.repel);
+                var repelFactor = repelToolEnabled * params.repelStrength * simulation.boxBounds.width;
 
-                        // NOTE: constant force
-                        var repelFactor = - simulation.boxBounds.width / 10 / v2.magnitude(mouseToParticle);
+                for (var particleIndex = 0; particleIndex < particles.length; particleIndex++) {
+                    var particle = particles[particleIndex];
+                    v2.subtract(mouseToParticle, particle.position, simulation.mouse.worldPosition);
+                    var distanceSquared = v2.square(mouseToParticle);
 
-                        v2.scaleAndAdd(particle.acceleration, particle.acceleration,
-                            mouseToParticle, repelFactor * params.attractStrength / particle.mass);
-                    }
-                }
-
-                // ! Repel tool
-
-                if (simulation.mouse.mode === MouseMode.repel)
-                {
-                    for (var particleIndex = 0; particleIndex < simulation.particles.length; particleIndex++) {
-                        var particle = simulation.particles[particleIndex];
-
-                        v2.subtract(mouseToParticle, particle.position, simulation.mouse.worldPosition);
-
-                        // NOTE: 1/r force
-                        var repelFactor = simulation.boxBounds.width / v2.square(mouseToParticle);
-
-                        v2.scaleAndAdd(particle.acceleration, particle.acceleration,
-                            mouseToParticle, repelFactor * params.repelStrength / particle.mass);
-                    }
-                }
-
-                // ! Move tool
-
-                if (simulation.mouse.mode === MouseMode.move)
-                {
-                    var activeParticle = simulation.mouse.activeParticle;
-                    // TODO: not really happy with the .isRemoved and the handling of the selectedParticles
-                    if (!activeParticle.isRemoved)
+                    if (distanceSquared > 0)
                     {
-                        v2.subtract(mouseToParticle, activeParticle.position, simulation.mouse.worldPosition);
+                        // ! Attract tool
+                        // NOTE: constant force
+                        v2.scaleAndAdd(particle.acceleration, particle.acceleration,
+                            mouseToParticle, attractFactor / Math.sqrt(distanceSquared) / particle.mass);
 
-                        for (var i = 0; i < simulation.mouse.selectedParticleIndices.length; i++)
-                        {
-                            var particle = particles[simulation.mouse.selectedParticleIndices[i]];
-
-                            v2.scaleAndAdd(particle.acceleration, particle.acceleration,
-                                mouseToParticle, -params.dragStrength / particle.mass);
-                            v2.scaleAndAdd(particle.acceleration, particle.acceleration,
-                                particle.velocity, -1 / particle.mass);
-                        }    
+                        // ! Repel tool
+                        // NOTE: 1/r force
+                        v2.scaleAndAdd(particle.acceleration, particle.acceleration,
+                            mouseToParticle, repelFactor / distanceSquared / particle.mass);
                     }
                 }
 
+                // TODO: not really happy with the .isRemoved and the handling of the selectedParticles
+                // TODO: use a dummyparticle as activeParticle to avoid this branch?
+                var activeParticle = simulation.mouse.activeParticle;
+                if (activeParticle && !activeParticle.isRemoved)
+                {
+                    v2.subtract(mouseToParticle, activeParticle.position, simulation.mouse.worldPosition);
+
+                    // ! Impulse tool
+
+                    if (doImpulseNow)
+                    {
+                        v2.scaleAndAdd(activeParticle.acceleration,
+                            activeParticle.acceleration, mouseToParticle, - params.impulseStrength / dt);
+                        doImpulseNow = false;
+                    }
+
+                    // ! Move tool
+
+                    var moveToolEnabled = (simulation.mouse.mode === MouseMode.move);
+                    var moveFactor = - moveToolEnabled / activeParticle.mass;
+                    v2.scaleAndAdd(activeParticle.acceleration, activeParticle.acceleration,
+                        mouseToParticle, moveFactor * params.dragStrength);
+                    v2.scaleAndAdd(activeParticle.acceleration, activeParticle.acceleration,
+                        activeParticle.velocity, moveFactor);
+                }
+
+                
                 v2.free(mouseToParticle);
+
+                // ! Finish velocity verlet
 
                 for (var particleIndex = 0; particleIndex < particles.length;
                     ++particleIndex)
@@ -3502,7 +4079,7 @@ var updateSimulation = function()
                     }
                 }
 
-                applyLangevinNoise(particles, params.thermostatSpeed, params.thermostatTemperature, dt);
+                applyLangevinNoise(particles, params.thermostatRandomStrength, params.thermostatTemperature, dt);
 
             }
 
@@ -3694,6 +4271,11 @@ function atMost(a, b)
     return Math.min(a, b);
 }
 
+function isBetween(a, x, b)
+{
+    return (a <= x) && (x <= b);
+}
+
 function clamp(a, x, b)
 {
     return Math.max(a, Math.min(b, x));
@@ -3706,12 +4288,7 @@ function lerp(a, t, b)
 
 function mod(a, b)
 {
-    var result = a % b;
-    if (result < 0)
-    {
-        result += b;
-    }
-    return result;
+    return ((a % b) + b) % b;
 }
 
 function microstateEntropy(p)
@@ -3879,11 +4456,11 @@ function randomPointInRect(rect)
         randomInInterval(rect.bottom, rect.top));
 }
 
-function randomDiscInRect(rect, radius)
+function randomDiscInRect(out, radius, rect)
 {
-    var x = randomInInterval(rect.left + radius, rect.right - radius);
-    var y = randomInInterval(rect.bottom + radius, rect.top - radius);
-    return v2(x, y);
+    out[0] = randomInInterval(rect.left + radius, rect.right - radius);
+    out[1] = randomInInterval(rect.bottom + radius, rect.top - radius);
+    return out;
 }
 
 function randomInInterval(a, b)

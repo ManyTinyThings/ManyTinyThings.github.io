@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Microscopic Differences –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<div class="wrapper">
+	<header>
+	    <a class="siteTitle" href="/">Many Tiny Things</a>
+	</header>
+</div>
+<div id="body">
+	<div id="leftNavigationArea" class="navigationArea">
+	</div>
+	
+	<div id="content">
+		<nav id="navBar"></nav>
+<p>Remember the <strong>many tiny things</strong> I was talking about earlier?</p>
+
+<p>We call them <strong>particles</strong> and they are sort of like <em>tiny billiard balls</em>.
+They <em>move</em> like billiard balls, and <em>bounce</em> like billiard balls.</p>
+
+<p>There are three big differences, though. The tiny particles …</p>
+
+<div class="flex">
+
+  <div class="threeColumn">
+
+    <p>… <strong>never stop</strong> moving.</p>
+
+    <script>
+    var neverStopSim = createSimulationHere({
+        pixelWidth: 250,
+        pixelHeight: 250,
+        initialize: function(simulation)
+        {
+            var p = simulation.parameters;
+            p.isOnlyHardSpheres = true;
+
+            var particleCount = 10;
+            var initialSpeed = 2;
+            for (var i = 0; i < particleCount; i++) {
+                var particle = new Particle();
+                randomDiscInRect(particle.position, particle.radius, simulation.boxBounds);
+                v2.set(particle.velocity, randomGaussian(), randomGaussian());
+                v2.scale(particle.velocity, particle.velocity, initialSpeed);
+                addParticle(simulation, particle);
+            }
+
+            thumbnailSim(simulation);
+        }
+    });
+
+    makeParentElementSequenceLink("/billiards/3_differences/friction");
+</script>
+
+  </div>
+
+  <div class="threeColumn">
+
+    <p>… can <strong>attract</strong> each other.</p>
+
+    <script>
+    var likeSim = createSimulationHere({
+        pixelWidth: 250,
+        pixelHeight: 250,
+        initialize: function(simulation)
+        {
+            var p = simulation.parameters;
+            p.friction = 0.2;
+
+            addOppositeParticles(simulation, 1);
+
+            var ljInteraction = new LennardJonesInteraction();
+            ljInteraction.strength = 10;
+            setInteraction(simulation, 0, 0, ljInteraction);
+
+            thumbnailSim(simulation);
+        }
+
+    });
+    
+    makeParentElementSequenceLink("/billiards/3_differences/attraction");
+</script>
+
+  </div>
+
+  <div class="threeColumn">
+
+    <p>… are <strong>very many</strong>.</p>
+
+    <script>
+    var likeSim = createSimulationHere({
+        pixelWidth: 250,
+        pixelHeight: 250,
+        initialize: function(simulation)
+        {
+            var p = simulation.parameters;
+            p.friction = 0.2;
+            setBoxWidth(simulation, 80);
+
+            initBilliards(simulation, simulation.boxBounds);
+
+            v2.set(simulation.particles[0].velocity, 50, 12);
+
+            thumbnailSim(simulation);
+        }
+    });
+
+    makeParentElementSequenceLink("/billiards/3_differences/many");
+</script>
+
+  </div>
+
+</div>
+
+<p>Click on each difference to explore it.</p>
+
+<p>When you are done, go to the next page by clicking down there ↓ or over there →.</p>
+
+	</div>
+
+	<div id="rightNavigationArea" class="navigationArea">
+	</div>
+</div>
+<footer id="pageFooter">
+</footer>
+</body>
+</html>

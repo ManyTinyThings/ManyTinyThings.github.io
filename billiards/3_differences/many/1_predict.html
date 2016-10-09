@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			Follow –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,47 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
+<script src="shared.js"></script>
 
 <script>
-    var billiardsSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
 
-            var particleCount = 7;
-            for (var i = 0; i < particleCount; i++) {
-            	var particle = new Particle();
-            	billiardsPosition(particle.position, i, 2 * particle.radius);
-            	addParticle(simulation, particle);
-            }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+            initBilliards(simulation, simulation.boxBounds);
+            simulation.particles[0].color = Color.black;
+
+    		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Make a break shot!</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
-
-      <p>Turn off the friction.</p>
-
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
-    });
-    endStep();
-</script>
-
-      <p>Take the shot.</p>
-
-      <script>
-	cue(isTriangleSplit(billiardsSim));
+<script>
+	cue(isBilliardsTriangleSplit(sim));
 	endStep();
 </script>
 
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
+<p>If you shoot hard enough, the balls will split and end up spread out across the billiards table.</p>
 
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
+<p>This makes for new situations every game.</p>
+
+<p>Now, shoot a ball and try to predict where it will end up.</p>
+
+<script>
+    cue(releaseCue(sim));
+    endStep();
 </script>
 
-    </div>
-  </div>
-</div>
+<p>Was your prediction correct?</p>
+
+<script>
+    createShowLatestShotParticleButton();
+</script>
+
+<p>Being able to predict where particles end up is what makes billiards a fun and challenging game.</p>
 
 
 </div>

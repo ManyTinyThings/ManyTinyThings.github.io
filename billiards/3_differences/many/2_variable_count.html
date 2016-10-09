@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			Even More Particles –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,48 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
+<script src="shared.js"></script>
 
 <script>
-    var billiardsSim = createSimulation({
+	var boxWidth = 25
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
+            setBoxWidth(simulation, boxWidth);
 
-            var particleCount = 7;
-            for (var i = 0; i < particleCount; i++) {
-            	var particle = new Particle();
-            	billiardsPosition(particle.position, i, 2 * particle.radius);
-            	addParticle(simulation, particle);
-            }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+            initBilliards(simulation, simulation.boxBounds);
+            simulation.particles[0].color = Color.black;
+
+    		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>16 balls might be enough for billiards, but in the real world there are <strong>incredibly many</strong> more than 16 tiny particles.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
-
-      <p>Turn off the friction.</p>
-
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
-    });
-    endStep();
+<script>
+	createSliderHere({
+		initialValue: boxWidth,
+		min: 25, max: 150,
+		minLabel: "16 particles", maxLabel: "Many",
+		update: function(value)
+		{
+			if (boxWidth != value)
+			{
+				boxWidth = value;
+				resetSimulation(sim);
+			}
+		},
+	});
 </script>
 
-      <p>Take the shot.</p>
+<p>The more particles, the harder it becomes to track a single particle.</p>
 
-      <script>
-	cue(isTriangleSplit(billiardsSim));
-	endStep();
+<script>
+	createShowLatestShotParticleButton();
 </script>
 
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
-
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
-</script>
-
-    </div>
-  </div>
-</div>
 
 
 </div>

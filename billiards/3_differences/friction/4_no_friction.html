@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			No Friction –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,51 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
-
 <script>
-    var billiardsSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
-            p.friction = 0.2;
+            p.isOnlyHardSpheres = true;
+            p.friction = 0;
 
-            var particleCount = 7;
-            for (var i = 0; i < particleCount; i++) {
-            	var particle = new Particle();
-            	billiardsPosition(particle.position, i, 2 * particle.radius);
-            	addParticle(simulation, particle);
-            }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+            var particle = new Particle();
+            particle.color = Color.red;
+            addParticle(simulation, particle);
+
+    		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>So, we have now tried playing billiards <strong>on ice</strong> and <strong>in mud</strong>. Kinda weird.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
+<p>But the tiny billiard balls that make up everything are <em>even weirder</em> than that.</p>
 
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
+<p><em>They have <strong>no friction</strong>.</em></p>
 
-      <p>Turn off the friction.</p>
+<p>What does that mean?</p>
 
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
+<p>Give the ball a kick.</p>
+
+<script>
+    cue(function() {
+        return (getTotalEnergy(sim) > 0.1);
     });
     endStep();
 </script>
 
-      <p>Take the shot.</p>
+<p>Wait for it to stop.</p>
 
-      <script>
-	cue(isTriangleSplit(billiardsSim));
-	endStep();
+<script>
+    cue(waitCue(10));
+    endStep();
 </script>
 
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
+<p>It never stops!</p>
 
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
-</script>
+<p>Without friction slowing things down, <em>they never stop</em>.</p>
 
-    </div>
-  </div>
-</div>
+<p><em>They keep going <strong>forever</strong>.</em></p>
 
 
 </div>

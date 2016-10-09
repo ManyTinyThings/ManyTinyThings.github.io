@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Group Hug –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<div class="wrapper">
+	<header>
+	    <a class="siteTitle" href="/">Many Tiny Things</a>
+	</header>
+</div>
+<div id="body">
+	<div id="leftNavigationArea" class="navigationArea">
+	</div>
+	
+	<div id="content">
+		<nav id="navBar"></nav>
+<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
+    var sim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0.1;
+
+            addOppositeParticles(simulation);
+
+            var ljInteraction = new LennardJonesInteraction();
+            ljInteraction.strength = 10;
+            setInteraction(simulation, 0, 0, ljInteraction);
+
+            setToolbarAvailableTools(simulation.toolbar, ["move", "create"]);
+        }
+    });
+</script>
+
+<p>Move these two closer.</p>
+
+<script>
+    cue(function () {
+        // TODO: timer here
+        var distance = v2.distance(sim.particles[0].position, sim.particles[1].position);
+        return (distance < 3);   
+    });
+    endStep();
+</script>
+
+<p>They still like each other!</p>
+
+<p>What if there were more than two particles?</p>
+
+<p>Add more particles using the <strong>create</strong> tool.</p>
+
+<script>
+    cue(function () {
+        return (sim.particles.length >= requiredCount);  
+    });
+    var requiredCount = 20;
+    insertHere(createOutput(function() {
+        return `${sim.particles.length} / ${requiredCount} particles`;
+    }));
+    endStep();
+</script>
+
+<p>A <em>group hug</em>! How cute!</p>
+
+<p>The attraction between each pair of particles holds them together, and together they now make up a bigger object.</p>
+
+<p>Try moving the object around with the <strong>move</strong> tool.</p>
+
+<script>
+    cue(function () {
+        return (ensembleSpeed(sim.particles) > 1); 
+    });
+    endStep();
+</script>
+
+<p>The tiny, <strong>microscopic</strong> particles move together <em>as one</em>.</p>
+
+<p><em>One</em> big, <strong>macroscopic</strong> thing.</p>
+
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
+	</div>
+
+	<div id="rightNavigationArea" class="navigationArea">
+	</div>
+</div>
+<footer id="pageFooter">
+</footer>
+</body>
+</html>

@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			High Speed Lovin&#39; –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,49 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
-
 <script>
-    var billiardsSim = createSimulation({
+
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
 
-            var particleCount = 7;
-            for (var i = 0; i < particleCount; i++) {
-            	var particle = new Particle();
-            	billiardsPosition(particle.position, i, 2 * particle.radius);
-            	addParticle(simulation, particle);
+            for (var i = 0; i < 3; i++) {
+                var particle = new Particle();
+                v2.setPolar(particle.position, 5, i * tau / 3);
+                addParticle(simulation, particle);
             }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+
+            var ljInteraction = new LennardJonesInteraction();
+            ljInteraction.strength = 10;
+            setInteraction(simulation, 0, 0, ljInteraction);
+
+            setToolbarAvailableTools(simulation.toolbar, ["move"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p><em>Uh-oh!</em></p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
+<p>There’s a third particle here!</p>
 
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
+<p>Will there be a fight?</p>
 
-      <p>Turn off the friction.</p>
-
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
+<script>
+    cue(function () {
+        var distance = 0;
+        for (var i = 0; i < 3; i++) {
+            distance += v2.distance(sim.particles[i].position, sim.particles[(i + 1) % 3].position);    
+        }
+        return (distance < 8);
     });
     endStep();
 </script>
 
-      <p>Take the shot.</p>
+<p>No, they all like each other equally!</p>
 
-      <script>
-	cue(isTriangleSplit(billiardsSim));
-	endStep();
-</script>
-
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
-
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
-</script>
-
-    </div>
-  </div>
-</div>
+<p>Move them around a bit and you’ll notice that they don’t just move towards the pointer. 
+They also <strong>rotate</strong> around each other!</p>
 
 
 </div>

@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			Frictionful Billiards –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,26 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
-
 <script>
-    var billiardsSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
 
-            var particleCount = 7;
-            for (var i = 0; i < particleCount; i++) {
-            	var particle = new Particle();
-            	billiardsPosition(particle.position, i, 2 * particle.radius);
-            	addParticle(simulation, particle);
-            }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+            initBilliards(simulation, simulation.boxBounds);
+
+    		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Let’s invent a new game: <em>Billiards on ice or mud!</em></p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
-
-      <p>Turn off the friction.</p>
-
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
-    });
-    endStep();
+<script>
+createIceMudSliderHere();
 </script>
 
-      <p>Take the shot.</p>
-
-      <script>
-	cue(isTriangleSplit(billiardsSim));
-	endStep();
-</script>
-
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
-
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
-</script>
-
-    </div>
-  </div>
-</div>
+<p>Which one is the most fun?</p>
 
 
 </div>

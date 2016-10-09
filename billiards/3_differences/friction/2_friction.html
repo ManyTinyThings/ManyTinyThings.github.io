@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			Friction –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,38 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
-
 <script>
-    var billiardsSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
+            p.isOnlyHardSpheres = true;
 
-            var particleCount = 7;
-            for (var i = 0; i < particleCount; i++) {
-            	var particle = new Particle();
-            	billiardsPosition(particle.position, i, 2 * particle.radius);
-            	addParticle(simulation, particle);
-            }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+            var particle = new Particle();
+            particle.color = Color.red;
+            addParticle(simulation, particle);
+
+    		setToolbarAvailableTools(simulation.toolbar, ["move"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>The force that that causes the ball to slow down is called <strong>friction</strong>.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
+<p>Some things have more friction than others:</p>
 
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
+<ul>
+  <li>if you roll the ball in <strong>mud</strong>, it will slow down very quickly,</li>
+  <li>but if you slide it on <strong>ice</strong>, it can go very far before stopping.</li>
+</ul>
 
-      <p>Turn off the friction.</p>
+<p>Here is a slider that changes the friction of the billiards table to be more <em>mud-like</em> (<em>more</em> friction) or <em>ice-like</em> (<em>less</em> friction).</p>
 
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
-    });
-    endStep();
+<script>
+createIceMudSliderHere();
 </script>
 
-      <p>Take the shot.</p>
-
-      <script>
-	cue(isTriangleSplit(billiardsSim));
-	endStep();
-</script>
-
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
-
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
-</script>
-
-    </div>
-  </div>
-</div>
+<p>Change the friction with the slider and drag around the ball to get a feel for how friction works.</p>
 
 
 </div>

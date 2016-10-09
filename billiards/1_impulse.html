@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			Impulse –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,37 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
-
 <script>
-    var billiardsSim = createSimulation({
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
             p.friction = 0.2;
 
-            var particleCount = 7;
-            for (var i = 0; i < particleCount; i++) {
-            	var particle = new Particle();
-            	billiardsPosition(particle.position, i, 2 * particle.radius);
-            	addParticle(simulation, particle);
-            }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+            initBilliards(simulation, simulation.boxBounds, 0);
+
+    		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
         }
     });
 </script>
 
-<div id="chapter">
+<p>Let’s begin by playing some billiards.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
+<p>The <strong>impulse</strong> tool works sort of like a billiards cue.</p>
 
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
+<p>Hold down the mouse button and drag to aim, and when you release the button, you <em>shoot</em>!</p>
 
-      <p>Turn off the friction.</p>
+<p>Try it out!</p>
 
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
-    });
-    endStep();
-</script>
-
-      <p>Take the shot.</p>
-
-      <script>
-	cue(isTriangleSplit(billiardsSim));
+<script>
+	cue(function() {
+		return (getTotalEnergy(sim) > 0.1);
+	});
 	endStep();
 </script>
 
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
+<p>Nice!</p>
 
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
-</script>
-
-    </div>
-  </div>
-</div>
+<p>It’s not really billiards with just one ball, though…</p>
 
 
 </div>

@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<title>
 		
-			Frictionless Messines –
+			Particles in Love –
 		
 		Many Tiny Things
 	</title>
@@ -34,66 +34,53 @@
 <div class="page">
 <div class="stepLog twoColumn">
 
-<script src="billiards.js"></script>
-
 <script>
-    var billiardsSim = createSimulation({
+
+    var sim = createSimulation({
         initialize: function(simulation) {
             var p = simulation.parameters;
-            p.friction = 0.2;
+            p.friction = 0.1;
 
-            var particleCount = 7;
-            for (var i = 0; i < particleCount; i++) {
-            	var particle = new Particle();
-            	billiardsPosition(particle.position, i, 2 * particle.radius);
-            	addParticle(simulation, particle);
-            }
-            setToolbarAvailableTools(simulation.toolbar, ["impulse", "move"]);
+            addOppositeParticles(simulation);
+
+            var ljInteraction = new LennardJonesInteraction();
+            ljInteraction.strength = 10;
+            setInteraction(simulation, 0, 0, ljInteraction);
+
+
+            setToolbarAvailableTools(simulation.toolbar, ["move"]);
         }
     });
+
 </script>
 
-<div id="chapter">
+<p>Move these particles closer to each other.</p>
 
-  <div class="page">
-    <div class="stepLog twoColumn">
-
-      <p>Without friction, billiards gets <em>a lot messier</em>.</p>
-
-      <p>Turn off the friction.</p>
-
-      <script>
-    cue(function()
-    {
-        return (billiardsSim.parameters.friction == 0);
-    })
-    createSliderHere({
-        object: billiardsSim.parameters,
-        name: "friction",
-        min: 0, max: 2 * billiardsSim.parameters.friction,
-        minLabel: "No friction", maxLabel: "Some",
+<script>
+    cue(function () {
+        // TODO: timer here
+        var distance = v2.distance(sim.particles[0].position, sim.particles[1].position);
+        return (distance < 3);   
     });
     endStep();
 </script>
 
-      <p>Take the shot.</p>
+<p>They seem to like each other! As they come closer, they attract and snap together.</p>
 
-      <script>
-	cue(isTriangleSplit(billiardsSim));
-	endStep();
+<p>Can you get them to let go?</p>
+
+<script>
+    cue(function () {
+        var distance = v2.distance(sim.particles[0].position, sim.particles[1].position);
+        return (distance > 6);
+    });
+    endStep();
 </script>
 
-      <p>Try to put the balls back in a triangle now. It’s practically impossible! They keep bouncing around, and just making them slow down is a lot of work.</p>
+<p>It takes some effort!</p>
 
-    </div>
-    <div class="twoColumn">
-      <script>
-	insertHere(billiardsSim.div);
-</script>
+<p>There’s a <em>force</em> binding the particles together.</p>
 
-    </div>
-  </div>
-</div>
 
 
 </div>

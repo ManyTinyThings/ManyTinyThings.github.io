@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Careful Breakage –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<div class="wrapper">
+	<header>
+	    <a class="siteTitle" href="/">Many Tiny Things</a>
+	</header>
+</div>
+<div id="body">
+	<div id="leftNavigationArea" class="navigationArea">
+	</div>
+	
+	<div id="content">
+		<nav id="navBar"></nav>
+<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
+    var sim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0;
+            setBoxWidth(simulation, 90);
+
+            initBilliards(simulation, simulation.boxBounds);
+
+    		setToolbarAvailableTools(simulation.toolbar, ["impulse"]);
+        }
+    });
+</script>
+
+<p>With <strong>no friction</strong>, it should be even easier to break the triangle than on ice.</p>
+
+<p>Shoot the ball <em>very carefully</em>.</p>
+
+<script>
+    var isAiming = false;
+    cue(function() {
+        if (sim.mouse.mode === MouseMode.impulse)
+        {
+            isAiming = true;
+        }
+        var didJustShoot = isAiming && (sim.mouse.mode === MouseMode.none);
+        if (didJustShoot)
+        {
+            isAiming = false;
+            var isEnergyLowEnough = (getTotalEnergy(sim) < 50);
+            if (isEnergyLowEnough)
+            {
+                return true;
+            }
+            else
+            {
+                setResetReminder(sim, true);
+                return false;
+            }
+        }
+        // TODO: use least squares here
+    });
+    endStep();
+</script>
+
+<p>The triangle <em>will</em> break, and the particles <em>will</em> spread out evenly.</p>
+
+<p>You just need to have <em>patience</em>.</p>
+
+<p>(<em>Psst!</em> If you get bored, use this slider to speed up time.)</p>
+
+<script>
+    createSliderHere({
+        initialValue: sim.parameters.simulationTimePerSecond,
+        min: sim.parameters.simulationTimePerSecond,
+        max: 10 * sim.parameters.simulationTimePerSecond,
+        minLabel: "Normal",
+        maxLabel: "Fast",
+        transform: function(x) { return Math.exp(x); },
+        inverseTransform: function(x) { return Math.log(x); },
+        update: function (value)
+        {
+            sim.parameters.simulationTimePerSecond = value;
+        },
+    });
+</script>
+
+
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
+	</div>
+
+	<div id="rightNavigationArea" class="navigationArea">
+	</div>
+</div>
+<footer id="pageFooter">
+</footer>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>test</title>
+	
+</head>
+<body>
+
+</body>
+
+<script>
+
+var array = [];
+function returnsObject(x, y)
+{
+	return {x: x, y: y};
+}
+document.addEventListener("click", function() {
+
+	for	(var i = 0; i < 1000000; ++i)
+	{
+		var object = returnsObject(i, 3*i - 2);
+	  	array[i] = object.x + object.y;
+	 	// array[i] = i + (3*i - 2);
+	}
+});
+</script>
+</html>
+

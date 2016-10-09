@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ 	<meta charset="utf-8">
+	<title>
+		
+			Frictionless Hugs for Everyone! –
+		
+		Many Tiny Things
+	</title>
+	<link rel="stylesheet" href="/assets/style.css" type="text/css" media="screen">
+	<script src="/assets/scripts/functions.js" type="text/javascript"></script>
+	<script src="/assets/scripts/canvas.js" type="text/javascript"></script>
+
+	<!-- favicon craziness -->
+	<link rel="shortcut icon" href="/assets/images/favicons/favicon.ico">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/assets/images/favicons/favicon-16x16.png" sizes="16x16">
+	<link rel="mask-icon" href="/assets/images/favicons/safari-pinned-tab.svg" color="#000000">
+</head>
+<body>
+<div class="wrapper">
+	<header>
+	    <a class="siteTitle" href="/">Many Tiny Things</a>
+	</header>
+</div>
+<div id="body">
+	<div id="leftNavigationArea" class="navigationArea">
+	</div>
+	
+	<div id="content">
+		<nav id="navBar"></nav>
+<div id="chapter">
+<div class="page">
+<div class="stepLog twoColumn">
+
+<script>
+    var sim = createSimulation({
+        initialize: function(simulation) {
+            var p = simulation.parameters;
+            p.friction = 0;
+            p.thermostatTemperature = 0;
+            p.thermostatDeterministicStrength = 1;
+            setBoxWidth(simulation, 50);
+
+            var particleCount = 37;
+
+            for (var particleIndex = 0; particleIndex < particleCount; particleIndex++) {
+                var particle = new Particle();
+                hexagonalLatticePosition(particle.position, particleIndex, 2);
+                addParticle(simulation, particle);
+            }
+
+
+            var displacement = v2.alloc();
+            var displacementMagnitude = 0.01;
+            for (var particleIndex = 0; particleIndex < simulation.particles.length; particleIndex++) {
+                var particle = simulation.particles[particleIndex];
+                v2.set(displacement, randomGaussian(), randomGaussian());
+                v2.scaleAndAdd(particle.position, particle.position, 
+                    displacement, displacementMagnitude);
+            }
+            v2.free(displacement);
+
+            var ljInteraction = new LennardJonesInteraction();
+            ljInteraction.strength = 10;
+            setInteraction(simulation, 0, 0, ljInteraction);
+
+            setToolbarAvailableTools(simulation.toolbar, ["move"]);
+        }
+    });
+</script>
+
+<p>Bumping stuff into walls is not a very precise method of investigation.</p>
+
+<p>Instead, here is a slider that controls how much the particles move.</p>
+
+<script>
+    // TODO: maybe have buttons for critical temperatures
+    createSliderHere({
+        initialValue: sim.parameters.thermostatTemperature,
+        min: 0, max: 20,
+        minLabel: "No movement", maxLabel: "A lot",
+        transform: function(x) { return (x * x)},
+        inverseTransform: function(x) { return Math.sqrt(x) },
+        update: function (value)
+        {
+            sim.parameters.thermostatTemperature = value;
+        }
+    });
+</script>
+
+<p>Slowly increase the amount of movement.</p>
+
+<script>
+    cue(function()
+    {
+        return (sim.parameters.thermostatTemperature > 0.5);
+    });
+    endStep();
+</script>
+
+<p>The particles jiggle in place.</p>
+
+<p>Keep increasing.</p>
+
+<script>
+    cue(function()
+    {
+        return (sim.parameters.thermostatTemperature > 2.7);
+    });
+    endStep();
+</script>
+
+<p>The particles start “walking” around the other particles. Sometimes, a single particle breaks free from the object.</p>
+
+<p>Keep increasing.</p>
+
+<script>
+    cue(function()
+    {
+        return (sim.parameters.thermostatTemperature > 4.5);
+    });
+    endStep();
+</script>
+
+<p>The particles start to lose their connections and break off into separate groups.</p>
+
+<p>Keep increasing.</p>
+
+<script>
+    cue(function()
+    {
+        return (sim.parameters.thermostatTemperature >= 15);
+    });
+    endStep();
+</script>
+
+<p>The particles are bouncing around, alone or in small groups, almost as if there was no attraction at all.</p>
+
+
+
+</div>
+<div class="twoColumn">
+<script>
+	insertHere(sim.div);
+</script>
+</div>
+</div>
+</div>
+	</div>
+
+	<div id="rightNavigationArea" class="navigationArea">
+	</div>
+</div>
+<footer id="pageFooter">
+</footer>
+</body>
+</html>

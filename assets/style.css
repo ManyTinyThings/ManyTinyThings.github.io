@@ -5,17 +5,18 @@ a {
 li {
   margin-bottom: 10px; }
 
-input[type="range"] {
+.slider input[type="range"] {
   -webkit-appearance: none;
-  width: 250px;
-  margin: 0 10px;
-  focus-outline: none; }
-  input[type="range"]::-webkit-slider-runnable-track {
+  flex-grow: 1;
+  margin: 0 10px; }
+  .slider input[type="range"]:focus {
+    outline: none; }
+  .slider input[type="range"]::-webkit-slider-runnable-track {
     height: 10px;
     background: #ddd;
     border: none;
     border-radius: 5px; }
-  input[type="range"]::-webkit-slider-thumb {
+  .slider input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 30px;
     height: 30px;
@@ -38,18 +39,48 @@ html, body {
   flex-direction: column;
   min-height: 100vh; }
 
-header {
-  background-color: #eee;
-  min-height: 100px;
+input {
+  font-size: 18px; }
+
+.wrapper {
   display: flex;
-  justify-content: center; }
+  justify-content: center;
+  background-color: #eee; }
+
+header {
+  width: 840px;
+  padding: 50px; }
   header .siteTitle {
-    width: 840px;
-    padding: 50px;
     font-size: 40px;
     text-decoration: none; }
     header .siteTitle, header .siteTitle:visited {
       color: black; }
+
+nav {
+  padding-bottom: 10px;
+  display: flex;
+  align-items: baseline; }
+  nav > * {
+    margin-right: 10px; }
+
+.sequenceDots {
+  font-size: 30px; }
+  .sequenceDots a {
+    text-decoration: none; }
+  .sequenceDots a:hover {
+    cursor: default; }
+  .sequenceDots .current, .sequenceDots a.visited:hover {
+    position: relative;
+    top: -5px;
+    cursor: pointer; }
+
+.sequenceLink {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px; }
+  .sequenceLink a {
+    text-decoration: none; }
 
 #body {
   flex: 1;
@@ -72,8 +103,7 @@ footer {
 
 #content {
   width: 840px;
-  padding: 50px;
-  margin-top: -30px; }
+  padding: 50px; }
 
 .navigationArea {
   flex: 1;
@@ -136,14 +166,14 @@ footer {
 
 .stepLog {
   position: relative; }
+  .stepLog > * {
+    margin-top: 0;
+    margin-bottom: 1em; }
   .stepLog.isCompleted:after {
     content: "●";
     font-size: 40px;
     position: absolute;
     left: 50%; }
-  .stepLog p {
-    margin-top: 0;
-    margin-bottom: 1em; }
   .stepLog > * {
     opacity: 0;
     transition: opacity 1s; }
@@ -152,7 +182,10 @@ footer {
   .stepLog .complete:before {
     content: "☑"; }
 
-.flex, .controls, .page {
+.simulation {
+  margin-bottom: 10px; }
+
+.flex, .slider, .controls, .page {
   display: flex;
   justify-content: space-between; }
 
